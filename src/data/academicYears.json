@@ -1,0 +1,19 @@
+[
+  {
+    "academicYear": "2026/2027",
+    "class": "XI TKJ 2",
+    "firstSchoolDay": "2026-07-13",
+    "lastSchoolDay": "2027-06-11",
+    "schoolDays": ["Senin", "Selasa", "Rabu", "Kamis", "Jumat"],
+    "semesters": {
+      "ganjil": {
+        "startDate": "2026-07-13",
+        "endDate": "2026-12-31"
+      },
+      "genap": {
+        "startDate": "2027-01-11",
+        "endDate": "2027-06-11"
+      }
+    }
+  }
+]

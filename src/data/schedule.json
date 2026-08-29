@@ -1,0 +1,202 @@
+{
+  "class": "XI TKJ 2",
+  "academicYear": "2026/2027",
+
+  "blocks": {
+    "A": {
+      "Senin": [
+        {
+          "periods": [1],
+          "subject": "Upacara",
+          "teacher": "",
+          "room": "Lapangan"
+        },
+        {
+          "periods": [2, 3, 4],
+          "subject": "Matematika",
+          "teacher": "Sugimin, S.Pd., M.Pd.",
+          "room": "R.32"
+        },
+        {
+          "periods": [5, 6, 7],
+          "subject": "Pendidikan Agama Islam dan Budi Pekerti",
+          "teacher": "Abu Bakar, S.Pd.",
+          "room": "R.32"
+        },
+        {
+          "periods": [8, 9, 10, 11],
+          "subject": "Bahasa Inggris",
+          "teacher": "Dobby Kurniawan, S.Pd.",
+          "room": "R.32"
+        }
+      ],
+
+      "Selasa": [
+        {
+          "periods": [1, 2, 3],
+          "subject": "Bahasa Indonesia",
+          "teacher": "Liza Mela, S.Pd.",
+          "room": "R.32"
+        },
+        {
+          "periods": [4, 5],
+          "subject": "Bahasa Jawa",
+          "teacher": "Lulu Himmatul Ulya, S.Pd.",
+          "room": "R.32"
+        },
+        {
+          "periods": [6, 7],
+          "subject": "Sejarah",
+          "teacher": "Suherni, S.Pd.",
+          "room": "R.32"
+        },
+        {
+          "periods": [8, 9, 10, 11],
+          "subject": "Pendidikan Pancasila",
+          "teacher": "Eri Murdiati, S.Pd.",
+          "room": "R.32"
+        }
+      ],
+
+      "Rabu": [
+        {
+          "periods": [1, 2],
+          "subject": "Sejarah",
+          "teacher": "Suherni, S.Pd.",
+          "room": "R.32"
+        },
+        {
+          "periods": [3, 4, 5],
+          "subject": "Pendidikan Agama Islam dan Budi Pekerti",
+          "teacher": "Abu Bakar, S.Pd.",
+          "room": "R.32"
+        },
+        {
+          "periods": [6, 7],
+          "subject": "Bahasa Jawa",
+          "teacher": "Lulu Himmatul Ulya, S.Pd.",
+          "room": "R.32"
+        },
+        {
+          "periods": [8, 9, 10, 11],
+          "subject": "Bahasa Inggris",
+          "teacher": "Dobby Kurniawan, S.Pd.",
+          "room": "R.32"
+        }
+      ],
+
+      "Kamis": [
+        {
+          "periods": [1, 2, 3],
+          "subject": "Matematika",
+          "teacher": "Sugimin, S.Pd., M.Pd.",
+          "room": "R.32"
+        },
+        {
+          "periods": [4, 5, 6],
+          "subject": "Bahasa Indonesia",
+          "teacher": "Liza Mela, S.Pd.",
+          "room": "R.32"
+        },
+        {
+          "periods": [7, 8, 9, 10, 11],
+          "subject": "Kreativitas, Inovasi, dan Kewirausahaan",
+          "teacher": "Salman Alfarizi, S.Kom.",
+          "room": "R.32"
+        }
+      ],
+
+      "Jumat": [
+        {
+          "periods": [1],
+          "subject": "7 Kebiasaan Anak Indonesia Hebat",
+          "teacher": "Salman Alfarizi, S.Kom.",
+          "room": "R.32"
+        },
+        {
+          "periods": [2, 3, 4, 5, 6],
+          "subject": "Kreativitas, Inovasi, dan Kewirausahaan",
+          "teacher": "Salman Alfarizi, S.Kom.",
+          "room": "R.32"
+        }
+      ]
+    },
+
+    "B": {
+      "Senin": [
+        {
+          "periods": [1],
+          "subject": "Upacara",
+          "teacher": "",
+          "room": "Lapangan"
+        },
+        {
+          "periods": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+          "subject": "Kejuruan TKJ",
+          "teacher": "Harits Rusli, S.Kom.",
+          "room": "Bengkel TKJ"
+        }
+      ],
+
+      "Selasa": [
+        {
+          "periods": [1, 2, 3, 4],
+          "subject": "Mapel Pilihan",
+          "teacher": "Muh. Nana Avicena, S.Pd.",
+          "room": "Bengkel TKJ"
+        },
+        {
+          "periods": [5, 6, 7],
+          "subject": "Kejuruan TKJ",
+          "teacher": "Harits Rusli, S.Kom.",
+          "room": "Bengkel TKJ"
+        },
+        {
+          "periods": [8, 9, 10, 11],
+          "subject": "Pendidikan Jasmani, Olahraga, dan Kesehatan",
+          "teacher": "Shofiatul Budiyah, S.Pd.",
+          "room": "Lapangan"
+        }
+      ],
+
+      "Rabu": [
+        {
+          "periods": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+          "subject": "Kejuruan TKJ",
+          "teacher": "Harits Rusli, S.Kom.",
+          "room": "Bengkel TKJ"
+        }
+      ],
+
+      "Kamis": [
+        {
+          "periods": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+          "subject": "Kejuruan TKJ",
+          "teacher": "Euis Murniasih, S.Kom.",
+          "room": "Bengkel TKJ"
+        }
+      ],
+
+      "Jumat": [
+        {
+          "periods": [1],
+          "subject": "7 Kebiasaan Anak Indonesia Hebat",
+          "teacher": "Salman Alfarizi, S.Kom.",
+          "room": "R.32"
+        },
+        {
+          "periods": [2, 3, 4, 5],
+          "subject": "Bahasa Jepang",
+          "teacher": "Iin Sri Mutiara, S.Pd.",
+          "room": "R.26"
+        },
+        {
+          "periods": [6],
+          "subject": "Kejuruan TKJ",
+          "teacher": "Euis Murniasih, S.Kom.",
+          "room": "Bengkel TKJ"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "class": "XI TKJ 2",
+  "academicYear": "2026/2027",
+  "schedule": {
+    "Senin": {
+      "members": [
+        "DAFFI AL HAMMANI",
+        "FARHAN AZHAR",
+        "AHLIF ANNISA",
+        "ARINA MAZIYA",
+        "AULA SHABIRINA",
+        "BAITI CAHAYA ANDINI",
+        "CANDRA NILA OKTAVIANA"
+      ]
+    },
+    "Selasa": {
+      "members": [
+        "HAFIIZH AKMAL RIYADI",
+        "M. FAHRI JAVIER SATYA PRADITA",
+        "DANIKA FARHANI",
+        "DONISAH",
+        "FARADILA MAULA",
+        "HANA MAHEERA MUTHIANIQA",
+        "LUTFIANAZWA RAMADHAN NURHIDAYAH"
+      ]
+    },
+    "Rabu": {
+      "members": [
+        "M. RAHMATUL ARIFIN",
+        "MISHEL RAMADHANI",
+        "NADYA SHAFWAH",
+        "NASYA ANAYA PUTRI",
+        "NAWAL FAUZIATUL AWLIYA",
+        "NAYRA CELLIA ANKADIRA",
+        "NAZLIZA ARLIANA PUTRI"
+      ]
+    },
+    "Kamis": {
+      "members": [
+        "MUHAMMAD RIFQI FAIZAL",
+        "MUHAMMAD RIZKI AKBAR",
+        "NUR NADYA ULYA",
+        "NURLIA AZIZAH",
+        "NURUL QONITA ASRIYA",
+        "RIFFI GUNAWAN",
+        "SELINAFYA ELDIANA"
+      ]
+    },
+    "Jumat": {
+      "members": [
+        "MUSYAFFA HANIF SUNNI",
+        "RAFA ADITYA",
+        "SITI NUR HIKMAH",
+        "SYIFA FADILLAH MURTONO",
+        "TALITA YUMNA AL-MUDZAKIRAH",
+        "TIARA ZENITA SARI",
+        "TITIN SOFIYATUN NISA",
+        "WAFIYATU SYAFA MAULIDA"
+      ]
+    }
+  },
+  "notes": [
+    "Piket dilakukan setiap hari sebelum dan sesudah jam pelajaran.",
+    "Setiap kelompok bertugas membersihkan area yang telah ditentukan."
+  ]
+}
