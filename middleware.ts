@@ -1,18 +1,31 @@
 import { NextRequest, NextResponse } from "next/server";
+import { SESSION_COOKIE_NAME } from "@/lib/auth-config";
 
-const COOKIE_NAME = "xi-tkj-2-session";
+const protectedRoutes = [
+  "/dashboard",
+  "/members",
+  "/schedule",
+  "/assignments",
+  "/explorer",
+  "/profile",
+  "/settings",
+  "/terminal",
+];
 
 export function middleware(req: NextRequest) {
-  const token = req.cookies.get(COOKIE_NAME)?.value;
-
+  const token = req.cookies.get(SESSION_COOKIE_NAME)?.value;
   const { pathname } = req.nextUrl;
 
-  // Dashboard harus login
-  if (pathname.startsWith("/dashboard") && !token) {
+  const isProtectedRoute = protectedRoutes.some((route) =>
+    pathname.startsWith(route)
+  );
+
+  // Belum login tetapi mencoba membuka halaman protected
+  if (isProtectedRoute && !token) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
-  // Kalau sudah login tidak boleh kembali ke login
+  // Sudah login tetapi mencoba membuka halaman login
   if (pathname === "/login" && token) {
     return NextResponse.redirect(new URL("/dashboard", req.url));
   }
