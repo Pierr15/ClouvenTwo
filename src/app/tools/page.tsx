@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import {
+  ArrowLeft,
   Binary,
   Calculator,
   CheckCircle2,
@@ -70,12 +71,17 @@ const tools = [
 ];
 
 export default function ToolsPage() {
-  const readyCount = tools.filter(
-    (tool) => tool.status === "Ready",
-  ).length;
+  const readyCount = tools.filter((tool) => tool.status === "Ready").length;
 
   return (
     <main className="min-h-screen bg-[#070b12] text-slate-200">
+      <Link
+        href="/dashboard"
+        className="mb-6 inline-flex items-center gap-2 text-sm text-slate-400 transition-colors hover:text-cyan-400"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Kembali ke Dashboard
+      </Link>
       {/* ==================================================
           HERO
       ================================================== */}
@@ -100,11 +106,9 @@ export default function ToolsPage() {
             </h1>
 
             <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-400">
-              Kumpulan tools untuk membantu proses
-              pembelajaran Teknik Komputer dan
-              Jaringan. Hitung, validasi, konversi,
-              dan analisis berbagai informasi jaringan
-              dalam satu tempat.
+              Kumpulan tools untuk membantu proses pembelajaran Teknik Komputer
+              dan Jaringan. Hitung, validasi, konversi, dan analisis berbagai
+              informasi jaringan dalam satu tempat.
             </p>
           </div>
 
@@ -135,9 +139,7 @@ export default function ToolsPage() {
                 Environment
               </p>
 
-              <p className="mt-1 text-lg font-black text-cyan-400">
-                CLOEV
-              </p>
+              <p className="mt-1 text-lg font-black text-cyan-400">CLOEV</p>
             </div>
           </div>
         </div>
@@ -152,9 +154,7 @@ export default function ToolsPage() {
             <div className="flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-cyan-400" />
 
-              <h2 className="text-lg font-bold text-white">
-                Available Tools
-              </h2>
+              <h2 className="text-lg font-bold text-white">Available Tools</h2>
             </div>
 
             <p className="mt-1 text-xs text-slate-500">
@@ -283,11 +283,10 @@ export default function ToolsPage() {
             </h3>
 
             <p className="mt-1 text-xs leading-6 text-slate-500">
-              Tools di halaman ini dirancang untuk
-              membantu praktik dan pembelajaran jaringan
-              pada kelas XI TKJ 2. Hasil perhitungan
-              jaringan menggunakan library yang
-              sesuai agar perhitungannya lebih akurat.
+              Tools di halaman ini dirancang untuk membantu praktik dan
+              pembelajaran jaringan pada kelas XI TKJ 2. Hasil perhitungan
+              jaringan menggunakan library yang sesuai agar perhitungannya lebih
+              akurat.
             </p>
           </div>
         </div>
