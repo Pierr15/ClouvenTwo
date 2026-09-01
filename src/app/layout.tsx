@@ -4,7 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import NextTopLoader from "nextjs-toploader";
+import RouteProgress from "@/components/RouteProgress";
 
 import "./globals.css";
 
@@ -35,10 +35,10 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-screen bg-background text-foreground">
-        <NextTopLoader />
+        <RouteProgress />
+
         <TooltipProvider>
           {children}
-
           <Toaster richColors position="top-right" />
           <SpeedInsights />
         </TooltipProvider>
