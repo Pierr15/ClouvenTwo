@@ -1,12 +1,11 @@
 import { cookies } from "next/headers";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
-
-const COOKIE_NAME = "xi-tkj-2-session";
+import { SESSION_COOKIE_NAME } from "./auth-config";
 
 export async function getCurrentUser() {
   const cookieStore = await cookies();
 
-  const token = cookieStore.get(COOKIE_NAME)?.value;
+  const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
 
   if (!token) return null;
 
@@ -26,7 +25,7 @@ export async function getCurrentUser() {
       .update({ is_active: false })
       .eq("id", session.id);
 
-    cookieStore.delete(COOKIE_NAME);
+    cookieStore.delete(SESSION_COOKIE_NAME);
 
     return null;
   }
