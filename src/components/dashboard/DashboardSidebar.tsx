@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import type { ComponentType, ReactNode } from "react";
 
@@ -13,6 +13,7 @@ import {
   Cloud,
   FolderOpen,
   Grid2X2,
+  LogOut,
   Settings,
   ShieldCheck,
   Terminal,
@@ -22,7 +23,7 @@ import {
 } from "lucide-react";
 
 /* ==================================================
-   MENU UTAMA
+   MENU
 ================================================== */
 
 const mainMenus = [
@@ -53,10 +54,6 @@ const mainMenus = [
   },
 ];
 
-/* ==================================================
-   CLOEV / CLOUD
-================================================== */
-
 const cloudMenus = [
   {
     title: "Explorer",
@@ -70,32 +67,11 @@ const cloudMenus = [
   },
 ];
 
-/* ==================================================
-   TOOLS
-================================================== */
-
 const toolMenus = [
   {
     title: "Alat",
     href: "/tools",
     icon: Wrench,
-  },
-];
-
-/* ==================================================
-   LAINNYA
-================================================== */
-
-const otherMenus = [
-  {
-    title: "Profil",
-    href: "/profile",
-    icon: UserRound,
-  },
-  {
-    title: "Pengaturan",
-    href: "/settings",
-    icon: Settings,
   },
 ];
 
@@ -111,7 +87,20 @@ export default function DashboardSidebar({
   initialCollapsed,
 }: DashboardSidebarProps) {
   const pathname = usePathname();
+  const router = useRouter();
+
   const [collapsed, setCollapsed] = useState(initialCollapsed);
+
+  const [accountOpen, setAccountOpen] = useState(false);
+
+  async function handleLogout() {
+    await fetch("/api/auth/logout", {
+      method: "POST",
+    });
+
+    router.replace("/login");
+    router.refresh();
+  }
 
   return (
     <aside
@@ -119,9 +108,9 @@ export default function DashboardSidebar({
         collapsed ? "w-20.5" : "w-70"
       }`}
     >
-      {/* ==================================================
+      {/* ============================
           LOGO
-      ================================================== */}
+      ============================ */}
 
       <div className="shrink-0 px-5 py-6">
         <div
@@ -147,9 +136,9 @@ export default function DashboardSidebar({
         </div>
       </div>
 
-      {/* ==================================================
+      {/* ============================
           COLLAPSE BUTTON
-      ================================================== */}
+      ============================ */}
 
       <button
         type="button"
@@ -157,7 +146,11 @@ export default function DashboardSidebar({
           setCollapsed((value) => {
             const nextValue = !value;
 
-            document.cookie = `cloev-sidebar-collapsed=${String(nextValue)}; Path=/; Max-Age=31536000; SameSite=Lax`;
+            document.cookie = `cloev-sidebar-collapsed=${String(
+              nextValue,
+            )}; Path=/; Max-Age=31536000; SameSite=Lax`;
+
+            setAccountOpen(false);
 
             return nextValue;
           });
@@ -172,12 +165,11 @@ export default function DashboardSidebar({
         )}
       </button>
 
-      {/* ==================================================
-          MENU SCROLL AREA
-      ================================================== */}
+      {/* ============================
+          MENU SCROLL
+      ============================ */}
 
       <div className="sidebar-scroll min-h-0 flex-1 overflow-y-auto px-4 pb-6">
-        {/* Menu Utama */}
         <SidebarSection title="Menu Utama" collapsed={collapsed}>
           {mainMenus.map((menu) => (
             <SidebarMenuItem
@@ -191,7 +183,6 @@ export default function DashboardSidebar({
           ))}
         </SidebarSection>
 
-        {/* CLOEV */}
         <SidebarSection title="CLOEV" collapsed={collapsed}>
           {cloudMenus.map((menu) => (
             <SidebarMenuItem
@@ -205,7 +196,6 @@ export default function DashboardSidebar({
           ))}
         </SidebarSection>
 
-        {/* Tools */}
         <SidebarSection title="Tools" collapsed={collapsed}>
           {toolMenus.map((menu) => (
             <SidebarMenuItem
@@ -218,29 +208,62 @@ export default function DashboardSidebar({
             />
           ))}
         </SidebarSection>
-
-        {/* Lainnya */}
-        <SidebarSection title="Lainnya" collapsed={collapsed}>
-          {otherMenus.map((menu) => (
-            <SidebarMenuItem
-              key={menu.href}
-              title={menu.title}
-              href={menu.href}
-              icon={menu.icon}
-              collapsed={collapsed}
-              active={isMenuActive(pathname, menu.href)}
-            />
-          ))}
-        </SidebarSection>
       </div>
 
-      {/* ==================================================
-          PROFILE
-      ================================================== */}
+      {/* ============================
+          ACCOUNT
+      ============================ */}
 
-      <div className="shrink-0 border-t border-slate-800/70 p-4">
+      <div className="relative shrink-0 border-t border-slate-800/70 p-4">
+        {/* Dropdown */}
         <div
-          className={`rounded-2xl border border-slate-800/70 bg-slate-800/60 p-3 ${
+          className={`absolute z-50 overflow-hidden rounded-xl border border-slate-700 bg-[#111827] shadow-2xl shadow-black/40 transition-all duration-250 ease-out ${
+            collapsed
+              ? "bottom-4 left-full ml-3 w-52 origin-bottom-left"
+              : "bottom-full left-4 right-4 mb-3 origin-bottom"
+          } ${
+            accountOpen
+              ? "pointer-events-auto translate-y-0 scale-100 opacity-100"
+              : "pointer-events-none translate-y-2 scale-95 opacity-0"
+          }`}
+        >
+          <Link
+            href="/profile"
+            onClick={() => setAccountOpen(false)}
+            className="flex items-center gap-3 px-4 py-3 text-sm text-slate-300 transition hover:bg-slate-800 hover:text-white"
+          >
+            <UserRound className="h-4 w-4 text-slate-500" />
+            Profil
+          </Link>
+
+          <Link
+            href="/settings"
+            onClick={() => setAccountOpen(false)}
+            className="flex items-center gap-3 px-4 py-3 text-sm text-slate-300 transition hover:bg-slate-800 hover:text-white"
+          >
+            <Settings className="h-4 w-4 text-slate-500" />
+            Pengaturan
+          </Link>
+
+          <div className="mx-3 border-t border-slate-800" />
+
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-red-400 transition hover:bg-red-500/10 hover:text-red-300"
+          >
+            <LogOut className="h-4 w-4" />
+            Keluar
+          </button>
+        </div>
+
+        {/* Trigger */}
+        <button
+          type="button"
+          onClick={() => setAccountOpen((value) => !value)}
+          aria-expanded={accountOpen}
+          aria-label="Menu akun"
+          className={`w-full rounded-2xl border border-slate-800/70 bg-slate-800/60 p-3 transition hover:border-blue-500/30 hover:bg-slate-800 ${
             collapsed ? "flex justify-center" : "flex items-center gap-3"
           }`}
         >
@@ -249,15 +272,23 @@ export default function DashboardSidebar({
           </div>
 
           {!collapsed && (
-            <div className="min-w-0">
-              <p className="truncate text-sm font-semibold text-white">
-                Student
-              </p>
+            <>
+              <div className="min-w-0 text-left">
+                <p className="truncate text-sm font-semibold text-white">
+                  Student
+                </p>
 
-              <p className="text-xs text-slate-500">XI TKJ 2</p>
-            </div>
+                <p className="text-xs text-slate-500">XI TKJ 2</p>
+              </div>
+
+              <ChevronRight
+                className={`ml-auto h-4 w-4 text-slate-500 transition-transform duration-200 ${
+                  accountOpen ? "-rotate-90" : "rotate-0"
+                }`}
+              />
+            </>
           )}
-        </div>
+        </button>
       </div>
     </aside>
   );
@@ -332,7 +363,6 @@ function SidebarMenuItem({
           : "text-slate-400 hover:bg-slate-800 hover:text-white"
       }`}
     >
-      {/* Active indicator */}
       {active && (
         <span className="absolute left-0 h-6 w-0.75 rounded-r-full bg-blue-500" />
       )}

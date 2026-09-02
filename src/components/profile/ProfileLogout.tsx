@@ -1,10 +1,7 @@
 import { LogOut, TriangleAlert } from "lucide-react";
 
-import LogoutButton from "@/components/auth/LogoutButton";
-
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -30,14 +27,12 @@ export default function ProfileLogout() {
               Akun
             </p>
 
-            <h2 className="text-xl font-bold text-white">
-              Keluar dari Akun?
-            </h2>
+            <h2 className="text-xl font-bold text-white">Keluar dari Akun?</h2>
           </div>
 
           <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
-            Setelah keluar, kamu harus login kembali menggunakan
-            PIN untuk mengakses CLOEV.
+            Setelah keluar, kamu harus login kembali menggunakan PIN untuk
+            mengakses CLOEV.
           </p>
 
           <div className="mt-5">
@@ -65,8 +60,7 @@ export default function ProfileLogout() {
                   <AlertDialogDescription className="text-center leading-6 text-slate-400">
                     Kamu yakin ingin keluar dari akun ini?
                     <br />
-                    Setelah logout, kamu harus login kembali
-                    menggunakan PIN.
+                    Setelah logout, kamu harus login kembali menggunakan PIN.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
 
@@ -74,10 +68,6 @@ export default function ProfileLogout() {
                   <AlertDialogCancel className="border-white/10 bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white">
                     Batal
                   </AlertDialogCancel>
-
-                  <AlertDialogAction asChild>
-                    <LogoutButton />
-                  </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
