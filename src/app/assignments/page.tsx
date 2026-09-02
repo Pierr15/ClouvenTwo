@@ -20,69 +20,52 @@ export default async function AssignmentsPage() {
   /*
    * Ambil submission milik siswa yang sedang login.
    */
-  const { data: submissions } =
-    await supabaseAdmin
-      .from("assignment_submissions")
-      .select("assignment_id")
-      .eq("member_id", user.id);
+  const { data: submissions } = await supabaseAdmin
+    .from("assignment_submissions")
+    .select("assignment_id")
+    .eq("member_id", user.id);
 
   const submittedAssignmentIds = new Set(
-    (submissions ?? []).map(
-      (submission) =>
-        submission.assignment_id,
-    ),
+    (submissions ?? []).map((submission) => submission.assignment_id),
   );
 
   /*
    * Tambahkan status khusus untuk siswa
    * yang sedang login.
    */
-  const assignmentsWithStudentStatus =
-    assignments.map((assignment) => ({
-      ...assignment,
+  const assignmentsWithStudentStatus = assignments.map((assignment) => ({
+    ...assignment,
 
-      studentStatus:
-        submittedAssignmentIds.has(
-          assignment.id,
-        )
-          ? ("completed" as const)
-          : ("pending" as const),
-    }));
+    studentStatus: submittedAssignmentIds.has(assignment.id)
+      ? ("completed" as const)
+      : ("pending" as const),
+  }));
 
   /*
    * Statistik tugas siswa.
    */
-  const pendingAssignments =
-    assignmentsWithStudentStatus.filter(
-      (assignment) =>
-        assignment.studentStatus ===
-        "pending",
-    ).length;
+  const pendingAssignments = assignmentsWithStudentStatus.filter(
+    (assignment) => assignment.studentStatus === "pending",
+  ).length;
 
   /*
    * Hak kelola tugas.
    */
-  const canManage =
-    user.role === "admin" ||
-    user.role === "guru";
+  const canManage = user.role === "admin" || user.role === "guru";
 
   return (
     <DashboardLayout>
-      <AssignmentHeader
-        totalAssignments={
-          assignmentsWithStudentStatus.length
-        }
-        pendingAssignments={
-          pendingAssignments
-        }
-      />
+      <div className="space-y-6 lg:space-y-8">
+        <AssignmentHeader
+          totalAssignments={assignmentsWithStudentStatus.length}
+          pendingAssignments={pendingAssignments}
+        />
 
-      <AssignmentContent
-        assignments={
-          assignmentsWithStudentStatus
-        }
-        canManage={canManage}
-      />
+        <AssignmentContent
+          assignments={assignmentsWithStudentStatus}
+          canManage={canManage}
+        />
+      </div>
     </DashboardLayout>
   );
 }

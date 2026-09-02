@@ -21,10 +21,10 @@ export default async function SchedulePage() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-6">
+      <div className="space-y-5 sm:space-y-6 lg:space-y-8">
         <ScheduleHeader block={block} />
 
-        <div className="grid gap-6 xl:grid-cols-2">
+        <div className="grid gap-5 lg:gap-6 xl:grid-cols-2">
           <CurrentLessonCard />
 
           <TodayScheduleCard />

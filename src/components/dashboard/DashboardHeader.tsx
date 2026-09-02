@@ -48,7 +48,7 @@ export default function DashboardHeader({ fullName }: Props) {
       </div>
 
       {/* Top bar */}
-      <div className="relative flex items-center justify-between border-b border-white/5 px-5 py-4 sm:px-6">
+      <div className="relative flex flex-wrap items-center justify-between gap-3 border-b border-white/5 px-4 py-4 sm:px-6">
         {/* CLOEV */}
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-br from-blue-500 to-cyan-400 shadow-lg shadow-blue-500/20">
@@ -125,7 +125,7 @@ export default function DashboardHeader({ fullName }: Props) {
             </span>
           </div>
 
-          <h1 className="text-3xl font-black tracking-tight text-white sm:text-4xl">
+          <h1 className="text-2xl font-black leading-tight tracking-tight text-white sm:text-3xl lg:text-4xl">
             {greeting},{" "}
             <span className="bg-linear-to-r from-blue-400 via-cyan-300 to-blue-400 bg-clip-text text-transparent">
               {fullName}!

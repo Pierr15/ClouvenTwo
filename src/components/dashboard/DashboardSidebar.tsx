@@ -3,10 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import type {
-  ComponentType,
-  ReactNode,
-} from "react";
+import type { ComponentType, ReactNode } from "react";
 
 import {
   CalendarDays,
@@ -106,18 +103,20 @@ const otherMenus = [
    SIDEBAR
 ================================================== */
 
-export default function DashboardSidebar() {
-  const pathname = usePathname();
+type DashboardSidebarProps = {
+  initialCollapsed: boolean;
+};
 
-  const [collapsed, setCollapsed] =
-    useState(false);
+export default function DashboardSidebar({
+  initialCollapsed,
+}: DashboardSidebarProps) {
+  const pathname = usePathname();
+  const [collapsed, setCollapsed] = useState(initialCollapsed);
 
   return (
     <aside
-      className={`relative flex h-screen shrink-0 flex-col overflow-hidden border-r border-slate-800/80 bg-[#111827] transition-all duration-300 ${
-        collapsed
-          ? "w-20.5"
-          : "w-70"
+      className={`relative flex h-screen shrink-0 flex-col overflow-visible border-r border-slate-800/80 bg-[#111827] transition-all duration-300 ${
+        collapsed ? "w-20.5" : "w-70"
       }`}
     >
       {/* ==================================================
@@ -127,9 +126,7 @@ export default function DashboardSidebar() {
       <div className="shrink-0 px-5 py-6">
         <div
           className={`flex items-center ${
-            collapsed
-              ? "justify-center"
-              : "gap-3"
+            collapsed ? "justify-center" : "gap-3"
           }`}
         >
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-600 shadow-lg shadow-blue-600/20">
@@ -156,15 +153,17 @@ export default function DashboardSidebar() {
 
       <button
         type="button"
-        onClick={() =>
-          setCollapsed((value) => !value)
-        }
-        aria-label={
-          collapsed
-            ? "Buka sidebar"
-            : "Tutup sidebar"
-        }
-        className="absolute -right-3.25 top-27 z-20 flex h-7 w-7 items-center justify-center rounded-full border border-slate-700 bg-slate-800 text-slate-300 shadow-lg transition hover:border-blue-500/40 hover:bg-blue-600 hover:text-white"
+        onClick={() => {
+          setCollapsed((value) => {
+            const nextValue = !value;
+
+            document.cookie = `cloev-sidebar-collapsed=${String(nextValue)}; Path=/; Max-Age=31536000; SameSite=Lax`;
+
+            return nextValue;
+          });
+        }}
+        aria-label={collapsed ? "Buka sidebar" : "Tutup sidebar"}
+        className="absolute -right-3.5 top-27 z-50 flex h-7 w-7 items-center justify-center rounded-full border border-slate-700 bg-slate-800 text-slate-300 shadow-lg transition hover:border-blue-500/40 hover:bg-blue-600 hover:text-white"
       >
         {collapsed ? (
           <ChevronRight className="h-4 w-4" />
@@ -179,10 +178,7 @@ export default function DashboardSidebar() {
 
       <div className="sidebar-scroll min-h-0 flex-1 overflow-y-auto px-4 pb-6">
         {/* Menu Utama */}
-        <SidebarSection
-          title="Menu Utama"
-          collapsed={collapsed}
-        >
+        <SidebarSection title="Menu Utama" collapsed={collapsed}>
           {mainMenus.map((menu) => (
             <SidebarMenuItem
               key={menu.href}
@@ -190,19 +186,13 @@ export default function DashboardSidebar() {
               href={menu.href}
               icon={menu.icon}
               collapsed={collapsed}
-              active={isMenuActive(
-                pathname,
-                menu.href,
-              )}
+              active={isMenuActive(pathname, menu.href)}
             />
           ))}
         </SidebarSection>
 
         {/* CLOEV */}
-        <SidebarSection
-          title="CLOEV"
-          collapsed={collapsed}
-        >
+        <SidebarSection title="CLOEV" collapsed={collapsed}>
           {cloudMenus.map((menu) => (
             <SidebarMenuItem
               key={menu.href}
@@ -210,19 +200,13 @@ export default function DashboardSidebar() {
               href={menu.href}
               icon={menu.icon}
               collapsed={collapsed}
-              active={isMenuActive(
-                pathname,
-                menu.href,
-              )}
+              active={isMenuActive(pathname, menu.href)}
             />
           ))}
         </SidebarSection>
 
         {/* Tools */}
-        <SidebarSection
-          title="Tools"
-          collapsed={collapsed}
-        >
+        <SidebarSection title="Tools" collapsed={collapsed}>
           {toolMenus.map((menu) => (
             <SidebarMenuItem
               key={menu.href}
@@ -230,19 +214,13 @@ export default function DashboardSidebar() {
               href={menu.href}
               icon={menu.icon}
               collapsed={collapsed}
-              active={isMenuActive(
-                pathname,
-                menu.href,
-              )}
+              active={isMenuActive(pathname, menu.href)}
             />
           ))}
         </SidebarSection>
 
         {/* Lainnya */}
-        <SidebarSection
-          title="Lainnya"
-          collapsed={collapsed}
-        >
+        <SidebarSection title="Lainnya" collapsed={collapsed}>
           {otherMenus.map((menu) => (
             <SidebarMenuItem
               key={menu.href}
@@ -250,10 +228,7 @@ export default function DashboardSidebar() {
               href={menu.href}
               icon={menu.icon}
               collapsed={collapsed}
-              active={isMenuActive(
-                pathname,
-                menu.href,
-              )}
+              active={isMenuActive(pathname, menu.href)}
             />
           ))}
         </SidebarSection>
@@ -266,9 +241,7 @@ export default function DashboardSidebar() {
       <div className="shrink-0 border-t border-slate-800/70 p-4">
         <div
           className={`rounded-2xl border border-slate-800/70 bg-slate-800/60 p-3 ${
-            collapsed
-              ? "flex justify-center"
-              : "flex items-center gap-3"
+            collapsed ? "flex justify-center" : "flex items-center gap-3"
           }`}
         >
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-slate-950 text-sm font-bold text-blue-400">
@@ -281,9 +254,7 @@ export default function DashboardSidebar() {
                 Student
               </p>
 
-              <p className="text-xs text-slate-500">
-                XI TKJ 2
-              </p>
+              <p className="text-xs text-slate-500">XI TKJ 2</p>
             </div>
           )}
         </div>
@@ -296,18 +267,12 @@ export default function DashboardSidebar() {
    ACTIVE ROUTE
 ================================================== */
 
-function isMenuActive(
-  pathname: string,
-  href: string,
-): boolean {
+function isMenuActive(pathname: string, href: string): boolean {
   if (href === "/dashboard") {
     return pathname === "/dashboard";
   }
 
-  return (
-    pathname === href ||
-    pathname.startsWith(`${href}/`)
-  );
+  return pathname === href || pathname.startsWith(`${href}/`);
 }
 
 /* ==================================================
@@ -320,11 +285,7 @@ type SidebarSectionProps = {
   children: ReactNode;
 };
 
-function SidebarSection({
-  title,
-  collapsed,
-  children,
-}: SidebarSectionProps) {
+function SidebarSection({ title, collapsed, children }: SidebarSectionProps) {
   return (
     <section className="mb-7">
       {!collapsed && (
@@ -333,9 +294,7 @@ function SidebarSection({
         </p>
       )}
 
-      <div className="space-y-1">
-        {children}
-      </div>
+      <div className="space-y-1">{children}</div>
     </section>
   );
 }
@@ -366,9 +325,7 @@ function SidebarMenuItem({
       href={href}
       title={collapsed ? title : undefined}
       className={`group relative flex items-center rounded-xl transition-all duration-200 ${
-        collapsed
-          ? "justify-center px-3 py-3"
-          : "gap-3 px-3 py-3"
+        collapsed ? "justify-center px-3 py-3" : "gap-3 px-3 py-3"
       } ${
         active
           ? "bg-blue-600/15 text-white"
@@ -382,18 +339,14 @@ function SidebarMenuItem({
 
       <Icon
         className={`h-5 w-5 shrink-0 transition-colors ${
-          active
-            ? "text-blue-400"
-            : "text-slate-500 group-hover:text-blue-400"
+          active ? "text-blue-400" : "text-slate-500 group-hover:text-blue-400"
         }`}
       />
 
       {!collapsed && (
         <span
           className={`text-sm font-medium ${
-            active
-              ? "text-white"
-              : "text-slate-400 group-hover:text-white"
+            active ? "text-white" : "text-slate-400 group-hover:text-white"
           }`}
         >
           {title}
