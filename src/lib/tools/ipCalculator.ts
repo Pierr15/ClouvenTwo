@@ -20,12 +20,8 @@ export type IPAddressResult = {
    IP CLASS
 ================================================== */
 
-function getIPClass(
-  ip: string,
-): IPAddressResult["ipClass"] {
-  const firstOctet = Number(
-    ip.split(".")[0],
-  );
+function getIPClass(ip: string): IPAddressResult["ipClass"] {
+  const firstOctet = Number(ip.split(".")[0]);
 
   if (firstOctet >= 1 && firstOctet <= 126) {
     return "A";
@@ -50,12 +46,8 @@ function getIPClass(
    PRIVATE IP
 ================================================== */
 
-function isPrivateIPv4(
-  ip: string,
-): boolean {
-  const octets = ip
-    .split(".")
-    .map(Number);
+function isPrivateIPv4(ip: string): boolean {
+  const octets = ip.split(".").map(Number);
 
   const first = octets[0];
   const second = octets[1];
@@ -66,19 +58,12 @@ function isPrivateIPv4(
   }
 
   // 172.16.0.0/12
-  if (
-    first === 172 &&
-    second >= 16 &&
-    second <= 31
-  ) {
+  if (first === 172 && second >= 16 && second <= 31) {
     return true;
   }
 
   // 192.168.0.0/16
-  if (
-    first === 192 &&
-    second === 168
-  ) {
+  if (first === 192 && second === 168) {
     return true;
   }
 
@@ -89,12 +74,8 @@ function isPrivateIPv4(
    SPECIAL IP
 ================================================== */
 
-function isSpecialIPv4(
-  ip: string,
-): boolean {
-  const octets = ip
-    .split(".")
-    .map(Number);
+function isSpecialIPv4(ip: string): boolean {
+  const octets = ip.split(".").map(Number);
 
   const first = octets[0];
   const second = octets[1];
@@ -102,12 +83,7 @@ function isSpecialIPv4(
   const fourth = octets[3];
 
   // 0.0.0.0
-  if (
-    first === 0 &&
-    second === 0 &&
-    third === 0 &&
-    fourth === 0
-  ) {
+  if (first === 0 && second === 0 && third === 0 && fourth === 0) {
     return true;
   }
 
@@ -117,28 +93,17 @@ function isSpecialIPv4(
   }
 
   // Link-local 169.254.0.0/16
-  if (
-    first === 169 &&
-    second === 254
-  ) {
+  if (first === 169 && second === 254) {
     return true;
   }
 
   // Multicast 224.0.0.0/4
-  if (
-    first >= 224 &&
-    first <= 239
-  ) {
+  if (first >= 224 && first <= 239) {
     return true;
   }
 
   // Broadcast
-  if (
-    first === 255 &&
-    second === 255 &&
-    third === 255 &&
-    fourth === 255
-  ) {
+  if (first === 255 && second === 255 && third === 255 && fourth === 255) {
     return true;
   }
 
@@ -149,9 +114,7 @@ function isSpecialIPv4(
    IP TYPE
 ================================================== */
 
-function getAddressType(
-  ip: string,
-): IPAddressResult["type"] {
+function getAddressType(ip: string): IPAddressResult["type"] {
   if (isSpecialIPv4(ip)) {
     return "Special";
   }
@@ -167,9 +130,7 @@ function getAddressType(
    SUBNET MASK
 ================================================== */
 
-function cidrToSubnetMask(
-  cidr: number,
-): string {
+function cidrToSubnetMask(cidr: number): string {
   const mask: number[] = [];
 
   for (let octet = 0; octet < 4; octet += 1) {
@@ -185,13 +146,7 @@ function cidrToSubnetMask(
       continue;
     }
 
-    mask.push(
-      256 -
-        Math.pow(
-          2,
-          8 - remaining,
-        ),
-    );
+    mask.push(256 - Math.pow(2, 8 - remaining));
   }
 
   return mask.join(".");
@@ -201,18 +156,11 @@ function cidrToSubnetMask(
    IPV4 TO NUMBER
 ================================================== */
 
-function ipv4ToNumber(
-  ip: string,
-): number {
-  const octets = ip
-    .split(".")
-    .map(Number);
+function ipv4ToNumber(ip: string): number {
+  const octets = ip.split(".").map(Number);
 
   return (
-    octets[0] * 256 ** 3 +
-    octets[1] * 256 ** 2 +
-    octets[2] * 256 +
-    octets[3]
+    octets[0] * 256 ** 3 + octets[1] * 256 ** 2 + octets[2] * 256 + octets[3]
   );
 }
 
@@ -220,27 +168,16 @@ function ipv4ToNumber(
    NUMBER TO IPV4
 ================================================== */
 
-function numberToIPv4(
-  value: number,
-): string {
-  const first =
-    Math.floor(value / 256 ** 3) % 256;
+function numberToIPv4(value: number): string {
+  const first = Math.floor(value / 256 ** 3) % 256;
 
-  const second =
-    Math.floor(value / 256 ** 2) % 256;
+  const second = Math.floor(value / 256 ** 2) % 256;
 
-  const third =
-    Math.floor(value / 256) % 256;
+  const third = Math.floor(value / 256) % 256;
 
-  const fourth =
-    value % 256;
+  const fourth = value % 256;
 
-  return [
-    first,
-    second,
-    third,
-    fourth,
-  ].join(".");
+  return [first, second, third, fourth].join(".");
 }
 
 /* ==================================================
@@ -269,19 +206,13 @@ function getHostRange(
     };
   }
 
-  const networkNumber =
-    ipv4ToNumber(networkAddress);
+  const networkNumber = ipv4ToNumber(networkAddress);
 
-  const broadcastNumber =
-    ipv4ToNumber(broadcastAddress);
+  const broadcastNumber = ipv4ToNumber(broadcastAddress);
 
   return {
-    first: numberToIPv4(
-      networkNumber + 1,
-    ),
-    last: numberToIPv4(
-      broadcastNumber - 1,
-    ),
+    first: numberToIPv4(networkNumber + 1),
+    last: numberToIPv4(broadcastNumber - 1),
   };
 }
 
@@ -289,10 +220,7 @@ function getHostRange(
    USABLE HOSTS
 ================================================== */
 
-function getUsableHosts(
-  cidr: number,
-  totalAddresses: number,
-): number {
+function getUsableHosts(cidr: number, totalAddresses: number): number {
   // Point-to-point subnet
   if (cidr === 31) {
     return 2;
@@ -314,15 +242,11 @@ function getUsableHosts(
    CALCULATE IPV4
 ================================================== */
 
-export function calculateIPv4(
-  input: string,
-): IPAddressResult {
+export function calculateIPv4(input: string): IPAddressResult {
   const value = input.trim();
 
   if (!value) {
-    throw new Error(
-      "IP address tidak boleh kosong.",
-    );
+    throw new Error("IP address tidak boleh kosong.");
   }
 
   let address: Address4;
@@ -330,38 +254,23 @@ export function calculateIPv4(
   try {
     address = new Address4(value);
   } catch {
-    throw new Error(
-      "Format IPv4 atau CIDR tidak valid.",
-    );
+    throw new Error("Format IPv4 atau CIDR tidak valid.");
   }
 
   const ip = address.address;
   const cidr = address.subnetMask;
 
-  const subnetMask =
-    cidrToSubnetMask(cidr);
+  const subnetMask = cidrToSubnetMask(cidr);
 
-  const networkAddress =
-    address.startAddress().address;
+  const networkAddress = address.startAddress().address;
 
-  const broadcastAddress =
-    address.endAddress().address;
+  const broadcastAddress = address.endAddress().address;
 
-  const totalAddresses =
-    Math.pow(2, 32 - cidr);
+  const totalAddresses = Math.pow(2, 32 - cidr);
 
-  const usableHosts =
-    getUsableHosts(
-      cidr,
-      totalAddresses,
-    );
+  const usableHosts = getUsableHosts(cidr, totalAddresses);
 
-  const hostRange =
-    getHostRange(
-      networkAddress,
-      broadcastAddress,
-      cidr,
-    );
+  const hostRange = getHostRange(networkAddress, broadcastAddress, cidr);
 
   return {
     input: value,
@@ -370,10 +279,8 @@ export function calculateIPv4(
     subnetMask,
     networkAddress,
     broadcastAddress,
-    firstUsableHost:
-      hostRange.first,
-    lastUsableHost:
-      hostRange.last,
+    firstUsableHost: hostRange.first,
+    lastUsableHost: hostRange.last,
     totalAddresses,
     usableHosts,
     ipClass: getIPClass(ip),

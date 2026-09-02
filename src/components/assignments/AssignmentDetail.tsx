@@ -1,8 +1,6 @@
 "use client";
 
-import Link from "next/link";
 import {
-  ArrowLeft,
   BookOpen,
   CalendarDays,
   Clock3,
@@ -15,6 +13,7 @@ import AssignmentUpload from "./AssignmentUpload";
 
 import type { Assignment } from "@/services/assignmentService";
 import type { AssignmentSubmission } from "@/services/assignmentSubmissionService";
+import BackButton from "@/components/navigation/BackButton";
 
 type Props = {
   assignment: Assignment;
@@ -31,9 +30,7 @@ function formatDate(date: string | null) {
   });
 }
 
-function getDeadlineStatus(
-  dueDate: string | null,
-) {
+function getDeadlineStatus(dueDate: string | null) {
   if (!dueDate) {
     return {
       label: "Tidak ada deadline",
@@ -45,11 +42,7 @@ function getDeadlineStatus(
   const now = new Date();
   const deadline = new Date(dueDate);
 
-  const nowDate = new Date(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate(),
-  );
+  const nowDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
   const deadlineDate = new Date(
     deadline.getFullYear(),
@@ -57,13 +50,9 @@ function getDeadlineStatus(
     deadline.getDate(),
   );
 
-  const diff =
-    deadlineDate.getTime() -
-    nowDate.getTime();
+  const diff = deadlineDate.getTime() - nowDate.getTime();
 
-  const days = Math.ceil(
-    diff / (1000 * 60 * 60 * 24),
-  );
+  const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
 
   if (days < 0) {
     return {
@@ -107,43 +96,26 @@ function getDeadlineStatus(
 const priorityConfig = {
   low: {
     label: "Rendah",
-    className:
-      "border-green-500/20 bg-green-500/10 text-green-400",
+    className: "border-green-500/20 bg-green-500/10 text-green-400",
   },
   normal: {
     label: "Normal",
-    className:
-      "border-cyan-500/20 bg-cyan-500/10 text-cyan-400",
+    className: "border-cyan-500/20 bg-cyan-500/10 text-cyan-400",
   },
   high: {
     label: "Tinggi",
-    className:
-      "border-red-500/20 bg-red-500/10 text-red-400",
+    className: "border-red-500/20 bg-red-500/10 text-red-400",
   },
 };
 
-export default function AssignmentDetail({
-  assignment,
-  submission,
-}: Props) {
-  const priority =
-    priorityConfig[assignment.priority];
+export default function AssignmentDetail({ assignment, submission }: Props) {
+  const priority = priorityConfig[assignment.priority];
 
-  const deadlineStatus =
-    getDeadlineStatus(
-      assignment.due_date,
-    );
+  const deadlineStatus = getDeadlineStatus(assignment.due_date);
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
-      {/* Kembali */}
-      <Link
-        href="/assignments"
-        className="inline-flex items-center gap-2 text-sm text-slate-400 transition-colors hover:text-cyan-400"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        Kembali ke Tugas
-      </Link>
+      <BackButton href="/assignments">Kembali ke Tugas</BackButton>
 
       {/* Header */}
       <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 md:p-8">
@@ -162,8 +134,7 @@ export default function AssignmentDetail({
             </h1>
 
             <p className="mt-3 text-slate-400">
-              {assignment.description ||
-                "Tidak ada deskripsi tugas."}
+              {assignment.description || "Tidak ada deskripsi tugas."}
             </p>
           </div>
 
@@ -180,13 +151,10 @@ export default function AssignmentDetail({
             <UserRound className="h-5 w-5 text-slate-500" />
 
             <div>
-              <p className="text-xs text-slate-500">
-                Guru
-              </p>
+              <p className="text-xs text-slate-500">Guru</p>
 
               <p className="text-sm font-medium text-slate-200">
-                {assignment.teacher ||
-                  "Belum ditentukan"}
+                {assignment.teacher || "Belum ditentukan"}
               </p>
             </div>
           </div>
@@ -195,14 +163,10 @@ export default function AssignmentDetail({
             <CalendarDays className="h-5 w-5 text-slate-500" />
 
             <div>
-              <p className="text-xs text-slate-500">
-                Diberikan
-              </p>
+              <p className="text-xs text-slate-500">Diberikan</p>
 
               <p className="text-sm font-medium text-slate-200">
-                {formatDate(
-                  assignment.assigned_date,
-                )}
+                {formatDate(assignment.assigned_date)}
               </p>
             </div>
           </div>
@@ -218,14 +182,10 @@ export default function AssignmentDetail({
             />
 
             <div>
-              <p className="text-xs text-slate-500">
-                Deadline
-              </p>
+              <p className="text-xs text-slate-500">Deadline</p>
 
               <p className="text-sm font-medium text-slate-200">
-                {formatDate(
-                  assignment.due_date,
-                )}
+                {formatDate(assignment.due_date)}
               </p>
 
               <p
@@ -240,20 +200,14 @@ export default function AssignmentDetail({
             <FileText className="h-5 w-5 text-slate-500" />
 
             <div>
-              <p className="text-xs text-slate-500">
-                Status
-              </p>
+              <p className="text-xs text-slate-500">Status</p>
 
               <p
                 className={`text-sm font-medium ${
-                  submission
-                    ? "text-green-400"
-                    : "text-yellow-400"
+                  submission ? "text-green-400" : "text-yellow-400"
                 }`}
               >
-                {submission
-                  ? "Sudah dikumpulkan"
-                  : "Belum dikumpulkan"}
+                {submission ? "Sudah dikumpulkan" : "Belum dikumpulkan"}
               </p>
             </div>
           </div>
@@ -269,13 +223,11 @@ export default function AssignmentDetail({
             </div>
 
             <div className="flex-1">
-              <h2 className="font-semibold text-white">
-                Link Pengumpulan
-              </h2>
+              <h2 className="font-semibold text-white">Link Pengumpulan</h2>
 
               <p className="mt-1 text-sm text-slate-400">
-                Gunakan link berikut jika guru meminta
-                pengumpulan melalui platform eksternal.
+                Gunakan link berikut jika guru meminta pengumpulan melalui
+                platform eksternal.
               </p>
 
               <a
@@ -300,9 +252,7 @@ export default function AssignmentDetail({
           </div>
 
           <div>
-            <h2 className="text-xl font-bold text-white">
-              Pengumpulan Tugas
-            </h2>
+            <h2 className="text-xl font-bold text-white">Pengumpulan Tugas</h2>
 
             <p className="text-sm text-slate-400">
               Upload hasil pekerjaanmu di sini.

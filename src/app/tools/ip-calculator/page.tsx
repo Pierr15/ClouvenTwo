@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import BackButton from "@/components/navigation/BackButton";
 import {
-  ArrowLeft,
   Calculator,
   CheckCircle2,
   Copy,
@@ -13,22 +12,14 @@ import {
   ShieldCheck,
 } from "lucide-react";
 
-import {
-  calculateIPv4,
-  type IPAddressResult,
-} from "@/lib/tools/ipCalculator";
+import { calculateIPv4, type IPAddressResult } from "@/lib/tools/ipCalculator";
 
-const presets = [
-  "192.168.1.10/24",
-  "10.0.0.1/8",
-  "172.16.1.10/16",
-];
+const presets = ["192.168.1.10/24", "10.0.0.1/8", "172.16.1.10/16"];
 
 export default function IPAddressCalculatorPage() {
   const [ip, setIp] = useState("");
   const [prefix, setPrefix] = useState("24");
-  const [result, setResult] =
-    useState<IPAddressResult | null>(null);
+  const [result, setResult] = useState<IPAddressResult | null>(null);
   const [error, setError] = useState("");
   const [copied, setCopied] = useState("");
 
@@ -48,13 +39,9 @@ export default function IPAddressCalculatorPage() {
     }
 
     try {
-      const input =
-        value.includes("/")
-          ? value
-          : `${value}/${prefix}`;
+      const input = value.includes("/") ? value : `${value}/${prefix}`;
 
-      const calculated =
-        calculateIPv4(input);
+      const calculated = calculateIPv4(input);
 
       setResult(calculated);
 
@@ -63,9 +50,7 @@ export default function IPAddressCalculatorPage() {
       }
     } catch (err) {
       setError(
-        err instanceof Error
-          ? err.message
-          : "Gagal menghitung alamat IPv4.",
+        err instanceof Error ? err.message : "Gagal menghitung alamat IPv4.",
       );
     }
   }
@@ -75,8 +60,7 @@ export default function IPAddressCalculatorPage() {
   ================================================== */
 
   function handlePreset(value: string) {
-    const [address, cidr] =
-      value.split("/");
+    const [address, cidr] = value.split("/");
 
     setIp(address);
     setPrefix(cidr ?? "24");
@@ -100,10 +84,7 @@ export default function IPAddressCalculatorPage() {
      COPY
   ================================================== */
 
-  async function handleCopy(
-    label: string,
-    value: string,
-  ) {
+  async function handleCopy(label: string, value: string) {
     try {
       await navigator.clipboard.writeText(value);
       setCopied(label);
@@ -123,17 +104,11 @@ export default function IPAddressCalculatorPage() {
   function toBinary(ipAddress: string) {
     return ipAddress
       .split(".")
-      .map((octet) =>
-        Number(octet)
-          .toString(2)
-          .padStart(8, "0"),
-      )
+      .map((octet) => Number(octet).toString(2).padStart(8, "0"))
       .join(".");
   }
 
-  const binaryIp = result
-    ? toBinary(result.ip)
-    : "";
+  const binaryIp = result ? toBinary(result.ip) : "";
 
   return (
     <main className="min-h-screen pb-12">
@@ -142,13 +117,7 @@ export default function IPAddressCalculatorPage() {
       ================================================== */}
 
       <div className="mb-8">
-        <Link
-          href="/tools"
-          className="mb-6 inline-flex items-center gap-2 text-xs font-medium text-slate-500 transition hover:text-cyan-400"
-        >
-          <ArrowLeft className="h-3.5 w-3.5" />
-          Kembali ke Tools
-        </Link>
+        <BackButton href="/tools">Kembali ke Tools</BackButton>
 
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
@@ -173,9 +142,9 @@ export default function IPAddressCalculatorPage() {
             </h1>
 
             <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-500">
-              Analisis IPv4 dan CIDR untuk mengetahui
-              network address, broadcast, host range,
-              subnet mask, dan informasi jaringan lainnya.
+              Analisis IPv4 dan CIDR untuk mengetahui network address,
+              broadcast, host range, subnet mask, dan informasi jaringan
+              lainnya.
             </p>
           </div>
 
@@ -206,9 +175,7 @@ export default function IPAddressCalculatorPage() {
               </div>
 
               <div>
-                <h2 className="text-sm font-bold text-white">
-                  Network Input
-                </h2>
+                <h2 className="text-sm font-bold text-white">Network Input</h2>
 
                 <p className="mt-0.5 text-[10px] text-slate-600">
                   Masukkan alamat IPv4
@@ -251,10 +218,8 @@ export default function IPAddressCalculatorPage() {
 
             <p className="mt-2 text-[10px] text-slate-700">
               Bisa menggunakan format{" "}
-              <span className="font-mono text-slate-600">
-                IP/CIDR
-              </span>
-              , contoh 192.168.1.10/24
+              <span className="font-mono text-slate-600">IP/CIDR</span>, contoh
+              192.168.1.10/24
             </p>
           </div>
 
@@ -303,9 +268,7 @@ export default function IPAddressCalculatorPage() {
                 <button
                   key={preset}
                   type="button"
-                  onClick={() =>
-                    handlePreset(preset)
-                  }
+                  onClick={() => handlePreset(preset)}
                   className="rounded-lg border border-slate-800 bg-[#080d15] px-2.5 py-1.5 font-mono text-[9px] text-slate-500 transition hover:border-cyan-500/20 hover:text-cyan-400"
                 >
                   {preset}
@@ -320,9 +283,7 @@ export default function IPAddressCalculatorPage() {
               <div className="flex gap-2">
                 <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-red-400" />
 
-                <p className="text-xs leading-5 text-red-300">
-                  {error}
-                </p>
+                <p className="text-xs leading-5 text-red-300">{error}</p>
               </div>
             </div>
           )}
@@ -410,46 +371,26 @@ export default function IPAddressCalculatorPage() {
                   value={result.ip}
                   copyable
                   copied={copied === "IP Address"}
-                  onCopy={() =>
-                    handleCopy(
-                      "IP Address",
-                      result.ip,
-                    )
-                  }
+                  onCopy={() => handleCopy("IP Address", result.ip)}
                 />
 
-                <ResultItem
-                  label="CIDR"
-                  value={`/${result.cidr}`}
-                />
+                <ResultItem label="CIDR" value={`/${result.cidr}`} />
 
                 <ResultItem
                   label="Subnet Mask"
                   value={result.subnetMask}
                   copyable
-                  copied={
-                    copied === "Subnet Mask"
-                  }
-                  onCopy={() =>
-                    handleCopy(
-                      "Subnet Mask",
-                      result.subnetMask,
-                    )
-                  }
+                  copied={copied === "Subnet Mask"}
+                  onCopy={() => handleCopy("Subnet Mask", result.subnetMask)}
                 />
 
                 <ResultItem
                   label="Network Address"
                   value={result.networkAddress}
                   copyable
-                  copied={
-                    copied === "Network Address"
-                  }
+                  copied={copied === "Network Address"}
                   onCopy={() =>
-                    handleCopy(
-                      "Network Address",
-                      result.networkAddress,
-                    )
+                    handleCopy("Network Address", result.networkAddress)
                   }
                 />
 
@@ -457,15 +398,9 @@ export default function IPAddressCalculatorPage() {
                   label="Broadcast Address"
                   value={result.broadcastAddress}
                   copyable
-                  copied={
-                    copied ===
-                    "Broadcast Address"
-                  }
+                  copied={copied === "Broadcast Address"}
                   onCopy={() =>
-                    handleCopy(
-                      "Broadcast Address",
-                      result.broadcastAddress,
-                    )
+                    handleCopy("Broadcast Address", result.broadcastAddress)
                   }
                 />
 
@@ -489,12 +424,7 @@ export default function IPAddressCalculatorPage() {
                   value={result.usableHosts.toLocaleString()}
                 />
 
-                <ResultItem
-                  label="Binary IP"
-                  value={binaryIp}
-                  full
-                  monoSmall
-                />
+                <ResultItem label="Binary IP" value={binaryIp} full monoSmall />
               </div>
             </>
           )}
@@ -517,11 +447,9 @@ export default function IPAddressCalculatorPage() {
             </h2>
 
             <p className="mt-2 max-w-4xl text-xs leading-6 text-slate-600">
-              Tool ini menggunakan service IPv4 CLOEV
-              untuk membantu pembelajaran jaringan
-              komputer, khususnya IPv4, CIDR, subnet mask,
-              network address, broadcast address, dan
-              host address.
+              Tool ini menggunakan service IPv4 CLOEV untuk membantu
+              pembelajaran jaringan komputer, khususnya IPv4, CIDR, subnet mask,
+              network address, broadcast address, dan host address.
             </p>
           </div>
         </div>
@@ -556,8 +484,8 @@ function EmptyResult() {
         </p>
 
         <p className="mt-2 text-xs leading-5 text-slate-700">
-          Masukkan IPv4 dan CIDR prefix pada panel
-          Network Input, kemudian tekan Calculate.
+          Masukkan IPv4 dan CIDR prefix pada panel Network Input, kemudian tekan
+          Calculate.
         </p>
       </div>
     </div>
@@ -587,9 +515,7 @@ function SummaryCard({
         </span>
       </div>
 
-      <p className="text-sm font-bold text-white">
-        {value}
-      </p>
+      <p className="text-sm font-bold text-white">{value}</p>
     </div>
   );
 }
@@ -636,9 +562,7 @@ function ResultItem({
             {copied ? (
               <>
                 <CheckCircle2 className="h-3 w-3 text-emerald-400" />
-                <span className="text-[8px] text-emerald-400">
-                  Copied
-                </span>
+                <span className="text-[8px] text-emerald-400">Copied</span>
               </>
             ) : (
               <Copy className="h-3 w-3" />
@@ -649,9 +573,7 @@ function ResultItem({
 
       <p
         className={`break-all font-mono font-semibold text-cyan-300 ${
-          monoSmall
-            ? "text-[11px] leading-5"
-            : "text-sm"
+          monoSmall ? "text-[11px] leading-5" : "text-sm"
         }`}
       >
         {value}

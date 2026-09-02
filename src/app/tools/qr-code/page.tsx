@@ -1,11 +1,11 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { ArrowLeft, Download, QrCode, RotateCcw, Sparkles } from "lucide-react";
+import { Download, QrCode, RotateCcw, Sparkles } from "lucide-react";
 
 import { generateQRCode } from "@/lib/tools/qrCode";
+import BackButton from "@/components/navigation/BackButton";
 
 export default function QRCodePage() {
   const [input, setInput] = useState("");
@@ -62,13 +62,7 @@ export default function QRCodePage() {
           BACK
       ================================================== */}
 
-      <Link
-        href="/tools"
-        className="mb-6 inline-flex items-center gap-2 text-xs font-medium text-slate-500 transition hover:text-cyan-400"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        Kembali ke Tools
-      </Link>
+      <BackButton href="/tools">Kembali ke Tools</BackButton>
 
       {/* ==================================================
           HERO

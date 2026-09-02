@@ -1,128 +1,209 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
+
+import { useRouter } from "next/navigation";
+
+const MIN_VISIBLE_TIME = 350;
 
 export default function RouteProgress() {
-  const pathname = usePathname();
+  const router = useRouter();
 
-  const [loading, setLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
+
   const [progress, setProgress] = useState(0);
   const [visible, setVisible] = useState(false);
 
-  const previousPathname = useRef(pathname);
-  const timer = useRef<NodeJS.Timeout | null>(null);
-  const hideTimer = useRef<NodeJS.Timeout | null>(null);
+  const started = useRef(false);
+  const startedAt = useRef(0);
 
-  // Gerakkan progress selama navigation masih berjalan
+  const progressTimer = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const finishTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // ================================================
+  // GERAKKAN BAR SELAMA NAVIGATION MASIH PENDING
+  // ================================================
+
   useEffect(() => {
-    if (!loading) return;
+    if (!isPending || !started.current) {
+      return;
+    }
 
-    timer.current = setInterval(() => {
+    progressTimer.current = setInterval(() => {
       setProgress((current) => {
         if (current >= 92) {
           return current;
         }
 
-        if (current < 30) {
-          return current + 2.5;
+        if (current < 25) {
+          return Math.min(current + 1.8, 25);
         }
 
-        if (current < 60) {
-          return current + 1.5;
+        if (current < 50) {
+          return Math.min(current + 1.1, 50);
         }
 
-        if (current < 80) {
-          return current + 0.8;
+        if (current < 70) {
+          return Math.min(current + 0.65, 70);
         }
 
-        return current + 0.25;
+        if (current < 85) {
+          return Math.min(current + 0.3, 85);
+        }
+
+        return Math.min(current + 0.12, 92);
       });
-    }, 60);
+    }, 50);
 
     return () => {
-      if (timer.current) {
-        clearInterval(timer.current);
+      if (progressTimer.current) {
+        clearInterval(progressTimer.current);
       }
     };
-  }, [loading]);
+  }, [isPending]);
 
-  // Navigation selesai ketika pathname berubah
+  // ================================================
+  // NAVIGATION BENAR-BENAR SELESAI
+  // ================================================
+
   useEffect(() => {
-    if (previousPathname.current === pathname) {
+    if (isPending || !started.current) {
       return;
     }
 
-    previousPathname.current = pathname;
+    const elapsed = performance.now() - startedAt.current;
 
-    const finishFrame = requestAnimationFrame(() => {
-      setProgress(100);
+    const remaining = Math.max(0, MIN_VISIBLE_TIME - elapsed);
 
-      hideTimer.current = setTimeout(() => {
-        setVisible(false);
-      }, 250);
+    finishTimer.current = setTimeout(() => {
+      requestAnimationFrame(() => {
+        setProgress(100);
 
-      setTimeout(() => {
-        setLoading(false);
-        setProgress(0);
-      }, 500);
-    });
+        hideTimer.current = setTimeout(() => {
+          setVisible(false);
+
+          setTimeout(() => {
+            setProgress(0);
+            started.current = false;
+          }, 200);
+        }, 180);
+      });
+    }, remaining);
 
     return () => {
-      cancelAnimationFrame(finishFrame);
+      if (finishTimer.current) {
+        clearTimeout(finishTimer.current);
+      }
 
       if (hideTimer.current) {
         clearTimeout(hideTimer.current);
       }
     };
-  }, [pathname]);
+  }, [isPending]);
 
-  // Deteksi klik internal link
+  // ================================================
+  // INTERCEPT SEMUA INTERNAL LINK
+  // ================================================
+
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      const link = target.closest("a");
+      // Hanya klik kiri biasa
+      if (event.button !== 0) {
+        return;
+      }
 
-      if (!link) return;
+      if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) {
+        return;
+      }
 
-      const href = link.getAttribute("href");
+      const target = event.target;
 
-      if (!href) return;
+      if (!(target instanceof Element)) {
+        return;
+      }
 
+      const link = target.closest<HTMLAnchorElement>("a");
+
+      if (!link) {
+        return;
+      }
+
+      // Jangan ganggu link download / new tab
+      if (link.target === "_blank" || link.hasAttribute("download")) {
+        return;
+      }
+
+      const destination = new URL(link.href, window.location.href);
+
+      // External URL
+      if (destination.origin !== window.location.origin) {
+        return;
+      }
+
+      // Anchor di halaman yang sama
       if (
-        href.startsWith("#") ||
-        href.startsWith("http://") ||
-        href.startsWith("https://") ||
-        href.startsWith("mailto:") ||
-        href.startsWith("tel:")
+        destination.pathname === window.location.pathname &&
+        destination.search === window.location.search &&
+        destination.hash
       ) {
         return;
       }
 
-      if (href === pathname) {
+      // Klik menuju URL yang persis sama
+      if (
+        destination.pathname === window.location.pathname &&
+        destination.search === window.location.search &&
+        !destination.hash
+      ) {
         return;
       }
 
+      event.preventDefault();
+
+      // Bersihkan timer navigasi sebelumnya
+      if (progressTimer.current) {
+        clearInterval(progressTimer.current);
+      }
+
+      if (finishTimer.current) {
+        clearTimeout(finishTimer.current);
+      }
+
+      if (hideTimer.current) {
+        clearTimeout(hideTimer.current);
+      }
+
+      started.current = true;
+      startedAt.current = performance.now();
+
       setVisible(true);
-      setProgress(5);
-      setLoading(true);
+      setProgress(4);
+
+      const href = destination.pathname + destination.search + destination.hash;
+
+      startTransition(() => {
+        router.push(href);
+      });
     };
 
-    document.addEventListener("click", handleClick);
+    document.addEventListener("click", handleClick, true);
 
     return () => {
-      document.removeEventListener("click", handleClick);
+      document.removeEventListener("click", handleClick, true);
     };
-  }, [pathname]);
+  }, [router]);
 
   return (
     <div
-      className={`pointer-events-none fixed left-0 top-0 z-9999 h-0.5 w-full transition-opacity duration-300 ${
+      className={`pointer-events-none fixed inset-x-0 top-0 z-9999 h-0.5 transition-opacity duration-200 ${
         visible ? "opacity-100" : "opacity-0"
       }`}
     >
       <div
-        className="h-full bg-blue-500 shadow-[0_0_12px_rgba(59,130,246,0.7)] transition-[width] duration-300 ease-out"
+        className="h-full bg-blue-500 shadow-[0_0_12px_rgba(59,130,246,0.75)] transition-[width] duration-300 ease-out"
         style={{
           width: `${progress}%`,
         }}

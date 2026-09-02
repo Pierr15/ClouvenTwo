@@ -1,9 +1,8 @@
 "use client";
 
-import Link from "next/link";
+import BackButton from "@/components/navigation/BackButton";
 import { useState } from "react";
 import {
-  ArrowLeft,
   Binary,
   Calculator,
   Network,
@@ -20,19 +19,13 @@ import {
 type Mode = "decimal" | "binary";
 
 export default function BinaryCalculatorPage() {
-  const [mode, setMode] =
-    useState<Mode>("decimal");
+  const [mode, setMode] = useState<Mode>("decimal");
 
-  const [input, setInput] =
-    useState("");
+  const [input, setInput] = useState("");
 
-  const [result, setResult] =
-    useState<BinaryCalculatorResult | null>(
-      null,
-    );
+  const [result, setResult] = useState<BinaryCalculatorResult | null>(null);
 
-  const [error, setError] =
-    useState("");
+  const [error, setError] = useState("");
 
   function handleCalculate() {
     setError("");
@@ -40,17 +33,11 @@ export default function BinaryCalculatorPage() {
 
     try {
       const calculated =
-        mode === "decimal"
-          ? ipv4ToBinary(input)
-          : binaryToIPv4(input);
+        mode === "decimal" ? ipv4ToBinary(input) : binaryToIPv4(input);
 
       setResult(calculated);
     } catch (error) {
-      setError(
-        error instanceof Error
-          ? error.message
-          : "Input tidak valid.",
-      );
+      setError(error instanceof Error ? error.message : "Input tidak valid.");
     }
   }
 
@@ -61,11 +48,7 @@ export default function BinaryCalculatorPage() {
   }
 
   function handleSwapMode() {
-    setMode((current) =>
-      current === "decimal"
-        ? "binary"
-        : "decimal",
-    );
+    setMode((current) => (current === "decimal" ? "binary" : "decimal"));
 
     setInput("");
     setResult(null);
@@ -83,13 +66,7 @@ export default function BinaryCalculatorPage() {
           BACK
       ================================================== */}
 
-      <Link
-        href="/tools"
-        className="mb-6 inline-flex items-center gap-2 text-xs font-medium text-slate-500 transition hover:text-cyan-400"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        Kembali ke Tools
-      </Link>
+      <BackButton href="/tools">Kembali ke Tools</BackButton>
 
       {/* ==================================================
           HERO
@@ -111,9 +88,8 @@ export default function BinaryCalculatorPage() {
         </h1>
 
         <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-400">
-          Konversi alamat IPv4 antara bentuk desimal
-          dan binary untuk membantu memahami struktur
-          alamat jaringan dan setiap oktetnya.
+          Konversi alamat IPv4 antara bentuk desimal dan binary untuk membantu
+          memahami struktur alamat jaringan dan setiap oktetnya.
         </p>
       </section>
 
@@ -133,13 +109,9 @@ export default function BinaryCalculatorPage() {
             </div>
 
             <div>
-              <h2 className="text-sm font-bold text-white">
-                Binary Input
-              </h2>
+              <h2 className="text-sm font-bold text-white">Binary Input</h2>
 
-              <p className="text-[11px] text-slate-500">
-                Masukkan alamat IPv4
-              </p>
+              <p className="text-[11px] text-slate-500">Masukkan alamat IPv4</p>
             </div>
           </div>
 
@@ -198,9 +170,7 @@ export default function BinaryCalculatorPage() {
               htmlFor="binary-input"
               className="mb-2 block text-xs font-semibold text-slate-300"
             >
-              {mode === "decimal"
-                ? "IPv4 Address"
-                : "Binary IPv4"}
+              {mode === "decimal" ? "IPv4 Address" : "Binary IPv4"}
             </label>
 
             <input
@@ -279,9 +249,7 @@ export default function BinaryCalculatorPage() {
 
         <div className="rounded-2xl border border-slate-800 bg-[#0b111b] p-5 shadow-xl shadow-black/10">
           <div className="mb-6">
-            <h2 className="text-sm font-bold text-white">
-              Calculation Result
-            </h2>
+            <h2 className="text-sm font-bold text-white">Calculation Result</h2>
 
             <p className="mt-1 text-[11px] text-slate-500">
               Hasil konversi dan informasi setiap oktet.
@@ -334,23 +302,15 @@ export default function BinaryCalculatorPage() {
                 </div>
 
                 <div className="grid gap-3 sm:grid-cols-2">
-                  {result.octets.map(
-                    (octet) => (
-                      <OctetCard
-                        key={octet.position}
-                        position={
-                          octet.position
-                        }
-                        decimal={
-                          octet.decimal
-                        }
-                        binary={
-                          octet.binary
-                        }
-                        bits={octet.bits}
-                      />
-                    ),
-                  )}
+                  {result.octets.map((octet) => (
+                    <OctetCard
+                      key={octet.position}
+                      position={octet.position}
+                      decimal={octet.decimal}
+                      binary={octet.binary}
+                      bits={octet.bits}
+                    />
+                  ))}
                 </div>
               </div>
 
@@ -359,16 +319,12 @@ export default function BinaryCalculatorPage() {
               <div className="grid gap-3 sm:grid-cols-2">
                 <ResultItem
                   label="Decimal Octets"
-                  value={result.decimalOctets.join(
-                    " . ",
-                  )}
+                  value={result.decimalOctets.join(" . ")}
                 />
 
                 <ResultItem
                   label="Binary Octets"
-                  value={result.binaryOctets.join(
-                    " . ",
-                  )}
+                  value={result.binaryOctets.join(" . ")}
                 />
               </div>
             </div>
@@ -392,11 +348,9 @@ export default function BinaryCalculatorPage() {
             </h2>
 
             <p className="mt-2 max-w-3xl text-xs leading-6 text-slate-600">
-              Binary Calculator digunakan untuk memahami
-              representasi alamat IPv4 dalam bentuk
-              binary. Setiap alamat IPv4 terdiri dari
-              32 bit yang terbagi menjadi empat oktet,
-              masing-masing berisi 8 bit.
+              Binary Calculator digunakan untuk memahami representasi alamat
+              IPv4 dalam bentuk binary. Setiap alamat IPv4 terdiri dari 32 bit
+              yang terbagi menjadi empat oktet, masing-masing berisi 8 bit.
             </p>
           </div>
         </div>
@@ -404,7 +358,6 @@ export default function BinaryCalculatorPage() {
     </main>
   );
 }
-
 
 /* ==================================================
    EMPTY RESULT
@@ -418,19 +371,15 @@ function EmptyResult() {
           <Binary className="h-5 w-5 text-slate-600" />
         </div>
 
-        <p className="text-sm font-semibold text-slate-500">
-          Belum ada hasil
-        </p>
+        <p className="text-sm font-semibold text-slate-500">Belum ada hasil</p>
 
         <p className="mt-1 text-xs text-slate-700">
-          Masukkan IPv4 atau binary lalu tekan
-          Convert.
+          Masukkan IPv4 atau binary lalu tekan Convert.
         </p>
       </div>
     </div>
   );
 }
-
 
 /* ==================================================
    OCTET CARD
@@ -481,18 +430,11 @@ function OctetCard({
   );
 }
 
-
 /* ==================================================
    RESULT ITEM
 ================================================== */
 
-function ResultItem({
-  label,
-  value,
-}: {
-  label: string;
-  value: string;
-}) {
+function ResultItem({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-xl border border-slate-800 bg-slate-950/70 p-4">
       <p className="mb-2 text-[9px] font-semibold uppercase tracking-[0.15em] text-slate-600">

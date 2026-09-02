@@ -1,11 +1,10 @@
 "use client";
 
-import Link from "next/link";
+import BackButton from "@/components/navigation/BackButton";
 import { useState } from "react";
 
 import {
   AlertCircle,
-  ArrowLeft,
   CheckCircle2,
   Network,
   RotateCcw,
@@ -20,8 +19,7 @@ import {
 export default function IPValidatorPage() {
   const [input, setInput] = useState("");
 
-  const [result, setResult] =
-    useState<IPValidatorResult | null>(null);
+  const [result, setResult] = useState<IPValidatorResult | null>(null);
 
   const [error, setError] = useState("");
 
@@ -34,11 +32,7 @@ export default function IPValidatorPage() {
 
       setResult(data);
     } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "IPv4 tidak valid.",
-      );
+      setError(err instanceof Error ? err.message : "IPv4 tidak valid.");
     }
   }
 
@@ -55,14 +49,7 @@ export default function IPValidatorPage() {
       ================================================== */}
 
       <div className="mb-5">
-        <Link
-          href="/tools"
-          className="group inline-flex items-center gap-2 rounded-xl border border-slate-800 bg-[#0b111b] px-3 py-2 text-xs font-medium text-slate-500 transition hover:border-cyan-500/30 hover:bg-[#0d1521] hover:text-cyan-400"
-        >
-          <ArrowLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5" />
-
-          <span>Kembali ke Tools</span>
-        </Link>
+        <BackButton href="/tools">Kembali ke Tools</BackButton>
       </div>
 
       {/* ==================================================
@@ -88,10 +75,8 @@ export default function IPValidatorPage() {
           </h1>
 
           <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-400">
-            Periksa validitas alamat IPv4,
-            tipe alamat, kelas IP, CIDR,
-            subnet mask, dan representasi
-            binary dalam satu tempat.
+            Periksa validitas alamat IPv4, tipe alamat, kelas IP, CIDR, subnet
+            mask, dan representasi binary dalam satu tempat.
           </p>
         </div>
       </section>
@@ -112,9 +97,7 @@ export default function IPValidatorPage() {
             </div>
 
             <div>
-              <h2 className="text-sm font-bold text-white">
-                IP Address Input
-              </h2>
+              <h2 className="text-sm font-bold text-white">IP Address Input</h2>
 
               <p className="text-[11px] text-slate-600">
                 Masukkan IPv4 atau IPv4/CIDR.
@@ -129,9 +112,7 @@ export default function IPValidatorPage() {
 
             <input
               value={input}
-              onChange={(event) =>
-                setInput(event.target.value)
-              }
+              onChange={(event) => setInput(event.target.value)}
               onKeyDown={(event) => {
                 if (event.key === "Enter") {
                   handleValidate();
@@ -170,9 +151,7 @@ export default function IPValidatorPage() {
               <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-400" />
 
               <div>
-                <p className="text-xs font-bold text-red-400">
-                  Invalid IPv4
-                </p>
+                <p className="text-xs font-bold text-red-400">Invalid IPv4</p>
 
                 <p className="mt-1 text-[11px] leading-5 text-red-400/70">
                   {error}
@@ -191,21 +170,18 @@ export default function IPValidatorPage() {
             </p>
 
             <div className="mt-2 flex flex-wrap gap-2">
-              {[
-                "192.168.1.10",
-                "192.168.1.10/24",
-                "8.8.8.8",
-                "127.0.0.1",
-              ].map((example) => (
-                <button
-                  key={example}
-                  type="button"
-                  onClick={() => setInput(example)}
-                  className="rounded-lg border border-slate-800 bg-slate-950 px-3 py-1.5 font-mono text-[10px] text-slate-500 transition hover:border-cyan-500/30 hover:text-cyan-400"
-                >
-                  {example}
-                </button>
-              ))}
+              {["192.168.1.10", "192.168.1.10/24", "8.8.8.8", "127.0.0.1"].map(
+                (example) => (
+                  <button
+                    key={example}
+                    type="button"
+                    onClick={() => setInput(example)}
+                    className="rounded-lg border border-slate-800 bg-slate-950 px-3 py-1.5 font-mono text-[10px] text-slate-500 transition hover:border-cyan-500/30 hover:text-cyan-400"
+                  >
+                    {example}
+                  </button>
+                ),
+              )}
             </div>
           </div>
         </div>
@@ -247,23 +223,15 @@ export default function IPValidatorPage() {
                 </p>
 
                 <p className="mt-1 text-[10px] text-slate-700">
-                  Masukkan IPv4 lalu tekan
-                  Validate IP.
+                  Masukkan IPv4 lalu tekan Validate IP.
                 </p>
               </div>
             </div>
           ) : (
             <div className="mt-5 grid gap-3 sm:grid-cols-2">
-              <ResultItem
-                label="IP Address"
-                value={result.ipAddress}
-                mono
-              />
+              <ResultItem label="IP Address" value={result.ipAddress} mono />
 
-              <ResultItem
-                label="Version"
-                value={result.version}
-              />
+              <ResultItem label="Version" value={result.version} />
 
               <ResultItem
                 label="Address Type"
@@ -271,35 +239,23 @@ export default function IPValidatorPage() {
                 accent
               />
 
-              <ResultItem
-                label="IP Class"
-                value={`Class ${result.ipClass}`}
-              />
+              <ResultItem label="IP Class" value={`Class ${result.ipClass}`} />
 
               <ResultItem
                 label="CIDR Prefix"
                 value={
-                  result.cidr !== null
-                    ? `/${result.cidr}`
-                    : "Tidak ditentukan"
+                  result.cidr !== null ? `/${result.cidr}` : "Tidak ditentukan"
                 }
               />
 
               <ResultItem
                 label="Subnet Mask"
-                value={
-                  result.subnetMask ??
-                  "Tidak ditentukan"
-                }
+                value={result.subnetMask ?? "Tidak ditentukan"}
                 mono
               />
 
               <div className="sm:col-span-2">
-                <ResultItem
-                  label="Binary"
-                  value={result.binary}
-                  mono
-                />
+                <ResultItem label="Binary" value={result.binary} mono />
               </div>
             </div>
           )}
@@ -322,10 +278,8 @@ export default function IPValidatorPage() {
             </h3>
 
             <p className="mt-1 text-xs leading-6 text-slate-500">
-              Validator memeriksa struktur IPv4,
-              nilai setiap octet, prefix CIDR,
-              tipe alamat, kelas IP, subnet mask,
-              dan representasi binary.
+              Validator memeriksa struktur IPv4, nilai setiap octet, prefix
+              CIDR, tipe alamat, kelas IP, subnet mask, dan representasi binary.
             </p>
           </div>
         </div>
@@ -358,11 +312,7 @@ function ResultItem({
       <p
         className={`mt-2 break-all text-sm font-bold ${
           mono ? "font-mono" : ""
-        } ${
-          accent
-            ? "text-cyan-400"
-            : "text-white"
-        }`}
+        } ${accent ? "text-cyan-400" : "text-white"}`}
       >
         {value}
       </p>

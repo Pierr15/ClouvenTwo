@@ -1,7 +1,6 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import {
-  ArrowLeft,
   CalendarDays,
   ClipboardList,
   ExternalLink,
@@ -12,90 +11,59 @@ import {
 
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { getCurrentUser } from "@/lib/currentUser";
+import BackButton from "@/components/navigation/BackButton";
 import {
   createAssignment,
   type AssignmentPriority,
 } from "@/services/assignmentService";
 
-async function createAssignmentAction(
-  formData: FormData,
-) {
+async function createAssignmentAction(formData: FormData) {
   "use server";
 
-  const title = String(
-    formData.get("title") ?? "",
-  ).trim();
+  const title = String(formData.get("title") ?? "").trim();
 
-  const subject = String(
-    formData.get("subject") ?? "",
-  ).trim();
+  const subject = String(formData.get("subject") ?? "").trim();
 
-  const teacher = String(
-    formData.get("teacher") ?? "",
-  ).trim();
+  const teacher = String(formData.get("teacher") ?? "").trim();
 
-  const description = String(
-    formData.get("description") ?? "",
-  ).trim();
+  const description = String(formData.get("description") ?? "").trim();
 
-  const assignedDate = String(
-    formData.get("assigned_date") ?? "",
-  ).trim();
+  const assignedDate = String(formData.get("assigned_date") ?? "").trim();
 
-  const dueDate = String(
-    formData.get("due_date") ?? "",
-  ).trim();
+  const dueDate = String(formData.get("due_date") ?? "").trim();
 
-  const priorityValue = String(
-    formData.get("priority") ?? "normal",
-  );
+  const priorityValue = String(formData.get("priority") ?? "normal");
 
-  const submissionUrl = String(
-    formData.get("submission_url") ?? "",
-  ).trim();
+  const submissionUrl = String(formData.get("submission_url") ?? "").trim();
 
-  const attachmentUrl = String(
-    formData.get("attachment_url") ?? "",
-  ).trim();
+  const attachmentUrl = String(formData.get("attachment_url") ?? "").trim();
 
   if (!title || !subject) {
-    redirect(
-      "/assignments/create?error=required",
-    );
+    redirect("/assignments/create?error=required");
   }
 
-  const allowedPriorities: AssignmentPriority[] = [
-    "low",
-    "normal",
-    "high",
-  ];
+  const allowedPriorities: AssignmentPriority[] = ["low", "normal", "high"];
 
-  const priority: AssignmentPriority =
-    allowedPriorities.includes(
-      priorityValue as AssignmentPriority,
-    )
-      ? (priorityValue as AssignmentPriority)
-      : "normal";
+  const priority: AssignmentPriority = allowedPriorities.includes(
+    priorityValue as AssignmentPriority,
+  )
+    ? (priorityValue as AssignmentPriority)
+    : "normal";
 
   const result = await createAssignment({
     title,
     subject,
     teacher: teacher || null,
     description: description || null,
-    assigned_date:
-      assignedDate || undefined,
+    assigned_date: assignedDate || undefined,
     due_date: dueDate || null,
     priority,
-    submission_url:
-      submissionUrl || null,
-    attachment_url:
-      attachmentUrl || null,
+    submission_url: submissionUrl || null,
+    attachment_url: attachmentUrl || null,
   });
 
   if (!result) {
-    redirect(
-      "/assignments/create?error=create",
-    );
+    redirect("/assignments/create?error=create");
   }
 
   redirect("/assignments");
@@ -116,21 +84,13 @@ export default async function CreateAssignmentPage({
 
   const params = await searchParams;
 
-  const today = new Date()
-    .toISOString()
-    .split("T")[0];
+  const today = new Date().toISOString().split("T")[0];
 
   return (
     <DashboardLayout>
       <div className="mx-auto max-w-4xl space-y-6">
         {/* Back */}
-        <Link
-          href="/assignments"
-          className="inline-flex items-center gap-2 text-sm text-slate-400 transition-colors hover:text-cyan-400"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Kembali ke Tugas
-        </Link>
+        <BackButton href="/assignments">Kembali ke Tugas</BackButton>
 
         {/* Header */}
         <div>
@@ -140,9 +100,7 @@ export default async function CreateAssignmentPage({
             </div>
 
             <div>
-              <h1 className="text-3xl font-bold text-white">
-                Buat Tugas Baru
-              </h1>
+              <h1 className="text-3xl font-bold text-white">Buat Tugas Baru</h1>
 
               <p className="mt-1 text-slate-400">
                 Tambahkan tugas baru untuk kelas XI TKJ 2.
@@ -169,10 +127,7 @@ export default async function CreateAssignmentPage({
         )}
 
         {/* Form */}
-        <form
-          action={createAssignmentAction}
-          className="space-y-6"
-        >
+        <form action={createAssignmentAction} className="space-y-6">
           {/* Informasi utama */}
           <section className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
             <div className="mb-6">
@@ -181,8 +136,7 @@ export default async function CreateAssignmentPage({
               </h2>
 
               <p className="mt-1 text-sm text-slate-500">
-                Informasi dasar tugas yang akan ditampilkan
-                kepada siswa.
+                Informasi dasar tugas yang akan ditampilkan kepada siswa.
               </p>
             </div>
 
@@ -274,9 +228,7 @@ export default async function CreateAssignmentPage({
           {/* Deadline */}
           <section className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
             <div className="mb-6">
-              <h2 className="text-lg font-semibold text-white">
-                Jadwal Tugas
-              </h2>
+              <h2 className="text-lg font-semibold text-white">Jadwal Tugas</h2>
 
               <p className="mt-1 text-sm text-slate-500">
                 Atur tanggal diberikan dan batas pengumpulan.
@@ -346,17 +298,11 @@ export default async function CreateAssignmentPage({
                   defaultValue="normal"
                   className="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white outline-none focus:border-cyan-500"
                 >
-                  <option value="low">
-                    Rendah
-                  </option>
+                  <option value="low">Rendah</option>
 
-                  <option value="normal">
-                    Normal
-                  </option>
+                  <option value="normal">Normal</option>
 
-                  <option value="high">
-                    Tinggi
-                  </option>
+                  <option value="high">Tinggi</option>
                 </select>
               </div>
             </div>
@@ -365,13 +311,11 @@ export default async function CreateAssignmentPage({
           {/* Pengumpulan */}
           <section className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
             <div className="mb-6">
-              <h2 className="text-lg font-semibold text-white">
-                Pengumpulan
-              </h2>
+              <h2 className="text-lg font-semibold text-white">Pengumpulan</h2>
 
               <p className="mt-1 text-sm text-slate-500">
-                Tambahkan link Google Form, Google Drive,
-                Classroom, atau platform pengumpulan lainnya.
+                Tambahkan link Google Form, Google Drive, Classroom, atau
+                platform pengumpulan lainnya.
               </p>
             </div>
 
@@ -395,8 +339,7 @@ export default async function CreateAssignmentPage({
                 />
 
                 <p className="mt-2 text-xs text-slate-600">
-                  Link ini akan muncul di halaman detail tugas
-                  untuk siswa.
+                  Link ini akan muncul di halaman detail tugas untuk siswa.
                 </p>
               </div>
 
@@ -419,8 +362,8 @@ export default async function CreateAssignmentPage({
                 />
 
                 <p className="mt-2 text-xs text-slate-600">
-                  Opsional. Bisa digunakan untuk link modul,
-                  PDF, atau materi tambahan.
+                  Opsional. Bisa digunakan untuk link modul, PDF, atau materi
+                  tambahan.
                 </p>
               </div>
             </div>

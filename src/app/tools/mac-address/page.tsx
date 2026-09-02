@@ -1,9 +1,8 @@
 "use client";
 
+import BackButton from "@/components/navigation/BackButton";
 import { useState } from "react";
-import Link from "next/link";
 import {
-  ArrowLeft,
   Calculator,
   RotateCcw,
   Network,
@@ -19,8 +18,7 @@ import {
 
 export default function MACAddressPage() {
   const [mac, setMac] = useState("");
-  const [result, setResult] =
-    useState<MACAddressResult | null>(null);
+  const [result, setResult] = useState<MACAddressResult | null>(null);
   const [error, setError] = useState("");
   const [copied, setCopied] = useState("");
 
@@ -30,16 +28,11 @@ export default function MACAddressPage() {
     setCopied("");
 
     try {
-      const calculated =
-        calculateMACAddress(mac);
+      const calculated = calculateMACAddress(mac);
 
       setResult(calculated);
     } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "MAC Address tidak valid.",
-      );
+      setError(err instanceof Error ? err.message : "MAC Address tidak valid.");
     }
   }
 
@@ -50,14 +43,9 @@ export default function MACAddressPage() {
     setCopied("");
   }
 
-  async function handleCopy(
-    value: string,
-    label: string,
-  ) {
+  async function handleCopy(value: string, label: string) {
     try {
-      await navigator.clipboard.writeText(
-        value,
-      );
+      await navigator.clipboard.writeText(value);
 
       setCopied(label);
 
@@ -65,9 +53,7 @@ export default function MACAddressPage() {
         setCopied("");
       }, 1500);
     } catch {
-      setError(
-        "Gagal menyalin data.",
-      );
+      setError("Gagal menyalin data.");
     }
   }
 
@@ -77,13 +63,7 @@ export default function MACAddressPage() {
           BACK
       ================================================== */}
 
-      <Link
-        href="/tools"
-        className="mb-6 inline-flex items-center gap-2 text-xs font-medium text-slate-500 transition hover:text-cyan-400"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        Kembali ke Tools
-      </Link>
+      <BackButton href="/tools">Kembali ke Tools</BackButton>
 
       {/* ==================================================
           HERO
@@ -105,9 +85,8 @@ export default function MACAddressPage() {
         </h1>
 
         <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-400">
-          Validasi dan analisis MAC Address untuk
-          memahami format hexadecimal, jenis alamat,
-          serta struktur MAC Address.
+          Validasi dan analisis MAC Address untuk memahami format hexadecimal,
+          jenis alamat, serta struktur MAC Address.
         </p>
       </section>
 
@@ -127,13 +106,9 @@ export default function MACAddressPage() {
             </div>
 
             <div>
-              <h2 className="text-sm font-bold text-white">
-                MAC Input
-              </h2>
+              <h2 className="text-sm font-bold text-white">MAC Input</h2>
 
-              <p className="text-[11px] text-slate-500">
-                Masukkan MAC Address
-              </p>
+              <p className="text-[11px] text-slate-500">Masukkan MAC Address</p>
             </div>
           </div>
 
@@ -221,13 +196,10 @@ export default function MACAddressPage() {
 
         <div className="rounded-2xl border border-slate-800 bg-[#0b111b] p-5 shadow-xl shadow-black/10">
           <div className="mb-6">
-            <h2 className="text-sm font-bold text-white">
-              MAC Analysis
-            </h2>
+            <h2 className="text-sm font-bold text-white">MAC Analysis</h2>
 
             <p className="mt-1 text-[11px] text-slate-500">
-              Informasi MAC Address akan muncul di
-              sini.
+              Informasi MAC Address akan muncul di sini.
             </p>
           </div>
 
@@ -243,8 +215,7 @@ export default function MACAddressPage() {
                 </p>
 
                 <p className="mt-1 text-xs text-slate-700">
-                  Masukkan MAC Address lalu tekan
-                  Calculate.
+                  Masukkan MAC Address lalu tekan Calculate.
                 </p>
               </div>
             </div>
@@ -257,42 +228,23 @@ export default function MACAddressPage() {
                   label="MAC Address"
                   value={result.colonFormat}
                   copyable
-                  copied={
-                    copied === "mac"
-                  }
-                  onCopy={() =>
-                    handleCopy(
-                      result.colonFormat,
-                      "mac",
-                    )
-                  }
+                  copied={copied === "mac"}
+                  onCopy={() => handleCopy(result.colonFormat, "mac")}
                 />
 
-                <ResultItem
-                  label="Address Type"
-                  value={result.type}
-                />
+                <ResultItem label="Address Type" value={result.type} />
 
                 <ResultItem
                   label="Administration"
-                  value={
-                    result.administration
-                  }
+                  value={result.administration}
                 />
 
                 <ResultItem
                   label="OUI"
                   value={result.oui}
                   copyable
-                  copied={
-                    copied === "oui"
-                  }
-                  onCopy={() =>
-                    handleCopy(
-                      result.oui,
-                      "oui",
-                    )
-                  }
+                  copied={copied === "oui"}
+                  onCopy={() => handleCopy(result.oui, "oui")}
                 />
               </div>
 
@@ -304,33 +256,13 @@ export default function MACAddressPage() {
                 </p>
 
                 <div className="grid gap-3 sm:grid-cols-2">
-                  <ResultItem
-                    label="Colon"
-                    value={
-                      result.colonFormat
-                    }
-                  />
+                  <ResultItem label="Colon" value={result.colonFormat} />
 
-                  <ResultItem
-                    label="Hyphen"
-                    value={
-                      result.hyphenFormat
-                    }
-                  />
+                  <ResultItem label="Hyphen" value={result.hyphenFormat} />
 
-                  <ResultItem
-                    label="Cisco / Dot"
-                    value={
-                      result.dotFormat
-                    }
-                  />
+                  <ResultItem label="Cisco / Dot" value={result.dotFormat} />
 
-                  <ResultItem
-                    label="Compact"
-                    value={
-                      result.compactFormat
-                    }
-                  />
+                  <ResultItem label="Compact" value={result.compactFormat} />
                 </div>
               </div>
 
@@ -350,15 +282,8 @@ export default function MACAddressPage() {
                   value={result.binary}
                   full
                   copyable
-                  copied={
-                    copied === "binary"
-                  }
-                  onCopy={() =>
-                    handleCopy(
-                      result.binary,
-                      "binary",
-                    )
-                  }
+                  copied={copied === "binary"}
+                  onCopy={() => handleCopy(result.binary, "binary")}
                 />
               </div>
 
@@ -366,9 +291,7 @@ export default function MACAddressPage() {
 
               <ResultItem
                 label="Device Identifier"
-                value={
-                  result.deviceIdentifier
-                }
+                value={result.deviceIdentifier}
                 full
               />
             </div>
@@ -392,12 +315,10 @@ export default function MACAddressPage() {
             </h2>
 
             <p className="mt-1 max-w-3xl text-xs leading-6 text-slate-500">
-              MAC Address merupakan alamat identitas
-              pada interface jaringan. Tool ini membantu
-              memahami format hexadecimal serta bit yang
-              menentukan apakah alamat termasuk Unicast
-              atau Multicast dan apakah alamat tersebut
-              menggunakan administrasi lokal atau global.
+              MAC Address merupakan alamat identitas pada interface jaringan.
+              Tool ini membantu memahami format hexadecimal serta bit yang
+              menentukan apakah alamat termasuk Unicast atau Multicast dan
+              apakah alamat tersebut menggunakan administrasi lokal atau global.
             </p>
           </div>
         </div>

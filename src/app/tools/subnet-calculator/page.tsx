@@ -1,15 +1,8 @@
 "use client";
 
-import Link from "next/link";
+import BackButton from "@/components/navigation/BackButton";
 import { useState } from "react";
-import {
-  ArrowLeft,
-  Calculator,
-  Network,
-  RotateCcw,
-  Server,
-  Layers3,
-} from "lucide-react";
+import { Calculator, Network, RotateCcw, Server, Layers3 } from "lucide-react";
 
 import {
   calculateSubnets,
@@ -20,8 +13,7 @@ export default function SubnetCalculatorPage() {
   const [network, setNetwork] = useState("");
   const [prefix, setPrefix] = useState("26");
 
-  const [result, setResult] =
-    useState<SubnetCalculatorResult | null>(null);
+  const [result, setResult] = useState<SubnetCalculatorResult | null>(null);
 
   const [error, setError] = useState("");
 
@@ -36,22 +28,13 @@ export default function SubnetCalculatorPage() {
 
     const newPrefix = Number(prefix);
 
-    if (
-      !Number.isInteger(newPrefix) ||
-      newPrefix < 0 ||
-      newPrefix > 32
-    ) {
-      setError(
-        "Prefix subnet harus berada di antara /0 sampai /32.",
-      );
+    if (!Number.isInteger(newPrefix) || newPrefix < 0 || newPrefix > 32) {
+      setError("Prefix subnet harus berada di antara /0 sampai /32.");
       return;
     }
 
     try {
-      const calculation = calculateSubnets(
-        network,
-        newPrefix,
-      );
+      const calculation = calculateSubnets(network, newPrefix);
 
       setResult(calculation);
     } catch (error) {
@@ -76,13 +59,7 @@ export default function SubnetCalculatorPage() {
           BACK
       ================================================== */}
 
-      <Link
-        href="/tools"
-        className="mb-6 inline-flex items-center gap-2 text-xs font-medium text-slate-500 transition hover:text-cyan-400"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        Kembali ke Tools
-      </Link>
+      <BackButton href="/tools">Kembali ke Tools</BackButton>
 
       {/* ==================================================
           HERO
@@ -104,9 +81,8 @@ export default function SubnetCalculatorPage() {
         </h1>
 
         <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-400">
-          Hitung pembagian subnet IPv4 berdasarkan
-          network awal dan prefix subnet baru. Tool ini
-          menampilkan jumlah subnet, subnet mask, host,
+          Hitung pembagian subnet IPv4 berdasarkan network awal dan prefix
+          subnet baru. Tool ini menampilkan jumlah subnet, subnet mask, host,
           hingga tabel setiap subnet.
         </p>
       </section>
@@ -127,9 +103,7 @@ export default function SubnetCalculatorPage() {
             </div>
 
             <div>
-              <h2 className="text-sm font-bold text-white">
-                Subnet Input
-              </h2>
+              <h2 className="text-sm font-bold text-white">Subnet Input</h2>
 
               <p className="text-[11px] text-slate-500">
                 Masukkan network IPv4
@@ -175,9 +149,7 @@ export default function SubnetCalculatorPage() {
             </label>
 
             <div className="flex items-center gap-2">
-              <span className="font-mono text-sm text-slate-500">
-                /
-              </span>
+              <span className="font-mono text-sm text-slate-500">/</span>
 
               <input
                 id="prefix"
@@ -235,13 +207,10 @@ export default function SubnetCalculatorPage() {
 
         <div className="rounded-2xl border border-slate-800 bg-[#0d1420] p-5 shadow-xl shadow-black/10">
           <div className="mb-6">
-            <h2 className="text-sm font-bold text-white">
-              Subnet Result
-            </h2>
+            <h2 className="text-sm font-bold text-white">Subnet Result</h2>
 
             <p className="mt-1 text-[11px] text-slate-500">
-              Hasil perhitungan subnet akan muncul di
-              sini.
+              Hasil perhitungan subnet akan muncul di sini.
             </p>
           </div>
 
@@ -257,8 +226,7 @@ export default function SubnetCalculatorPage() {
                 </p>
 
                 <p className="mt-1 text-xs text-slate-700">
-                  Masukkan network dan prefix lalu tekan
-                  Calculate.
+                  Masukkan network dan prefix lalu tekan Calculate.
                 </p>
               </div>
             </div>
@@ -282,10 +250,7 @@ export default function SubnetCalculatorPage() {
                   value={result.originalSubnetMask}
                 />
 
-                <ResultItem
-                  label="New CIDR"
-                  value={`/${result.newPrefix}`}
-                />
+                <ResultItem label="New CIDR" value={`/${result.newPrefix}`} />
 
                 <ResultItem
                   label="New Subnet Mask"
@@ -312,15 +277,9 @@ export default function SubnetCalculatorPage() {
                   value={result.subnetIncrement.toLocaleString()}
                 />
 
-                <ResultItem
-                  label="First Subnet"
-                  value={result.firstSubnet}
-                />
+                <ResultItem label="First Subnet" value={result.firstSubnet} />
 
-                <ResultItem
-                  label="Last Subnet"
-                  value={result.lastSubnet}
-                />
+                <ResultItem label="Last Subnet" value={result.lastSubnet} />
               </div>
 
               {/* TABLE */}
@@ -347,73 +306,47 @@ export default function SubnetCalculatorPage() {
                     <table className="w-full min-w-215 border-collapse text-left">
                       <thead className="sticky top-0 z-10 bg-[#111827]">
                         <tr className="border-b border-slate-800">
-                          <TableHeader>
-                            #
-                          </TableHeader>
+                          <TableHeader>#</TableHeader>
 
-                          <TableHeader>
-                            Network
-                          </TableHeader>
+                          <TableHeader>Network</TableHeader>
 
-                          <TableHeader>
-                            First Host
-                          </TableHeader>
+                          <TableHeader>First Host</TableHeader>
 
-                          <TableHeader>
-                            Last Host
-                          </TableHeader>
+                          <TableHeader>Last Host</TableHeader>
 
-                          <TableHeader>
-                            Broadcast
-                          </TableHeader>
+                          <TableHeader>Broadcast</TableHeader>
 
-                          <TableHeader>
-                            Addresses
-                          </TableHeader>
+                          <TableHeader>Addresses</TableHeader>
 
-                          <TableHeader>
-                            Hosts
-                          </TableHeader>
+                          <TableHeader>Hosts</TableHeader>
                         </tr>
                       </thead>
 
                       <tbody>
-                        {result.subnets.map(
-                          (subnet) => (
-                            <tr
-                              key={subnet.subnet}
-                              className="border-b border-slate-900 transition last:border-0 hover:bg-slate-800/40"
-                            >
-                              <TableCell>
-                                {subnet.subnet}
-                              </TableCell>
+                        {result.subnets.map((subnet) => (
+                          <tr
+                            key={subnet.subnet}
+                            className="border-b border-slate-900 transition last:border-0 hover:bg-slate-800/40"
+                          >
+                            <TableCell>{subnet.subnet}</TableCell>
 
-                              <TableCell>
-                                {subnet.networkAddress}
-                              </TableCell>
+                            <TableCell>{subnet.networkAddress}</TableCell>
 
-                              <TableCell>
-                                {subnet.firstHost}
-                              </TableCell>
+                            <TableCell>{subnet.firstHost}</TableCell>
 
-                              <TableCell>
-                                {subnet.lastHost}
-                              </TableCell>
+                            <TableCell>{subnet.lastHost}</TableCell>
 
-                              <TableCell>
-                                {subnet.broadcastAddress}
-                              </TableCell>
+                            <TableCell>{subnet.broadcastAddress}</TableCell>
 
-                              <TableCell>
-                                {subnet.totalAddresses.toLocaleString()}
-                              </TableCell>
+                            <TableCell>
+                              {subnet.totalAddresses.toLocaleString()}
+                            </TableCell>
 
-                              <TableCell>
-                                {subnet.usableHosts.toLocaleString()}
-                              </TableCell>
-                            </tr>
-                          ),
-                        )}
+                            <TableCell>
+                              {subnet.usableHosts.toLocaleString()}
+                            </TableCell>
+                          </tr>
+                        ))}
                       </tbody>
                     </table>
                   </div>
@@ -434,12 +367,10 @@ export default function SubnetCalculatorPage() {
         </h2>
 
         <p className="mt-2 max-w-3xl text-xs leading-6 text-slate-600">
-          Tool ini digunakan untuk membantu pembelajaran
-          subnetting dalam jaringan komputer. Masukkan
-          network IPv4 beserta prefix awal, kemudian
-          tentukan prefix subnet baru untuk melihat
-          pembagian network, host, broadcast, dan jumlah
-          subnet.
+          Tool ini digunakan untuk membantu pembelajaran subnetting dalam
+          jaringan komputer. Masukkan network IPv4 beserta prefix awal, kemudian
+          tentukan prefix subnet baru untuk melihat pembagian network, host,
+          broadcast, dan jumlah subnet.
         </p>
       </section>
     </main>
@@ -450,13 +381,7 @@ export default function SubnetCalculatorPage() {
    RESULT ITEM
 ================================================== */
 
-function ResultItem({
-  label,
-  value,
-}: {
-  label: string;
-  value: string;
-}) {
+function ResultItem({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-xl border border-slate-800 bg-slate-950/70 p-4">
       <p className="mb-2 text-[9px] font-semibold uppercase tracking-[0.15em] text-slate-600">
@@ -474,11 +399,7 @@ function ResultItem({
    TABLE HEADER
 ================================================== */
 
-function TableHeader({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+function TableHeader({ children }: { children: React.ReactNode }) {
   return (
     <th className="whitespace-nowrap px-4 py-3 text-[9px] font-bold uppercase tracking-wider text-slate-500">
       {children}
@@ -490,11 +411,7 @@ function TableHeader({
    TABLE CELL
 ================================================== */
 
-function TableCell({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+function TableCell({ children }: { children: React.ReactNode }) {
   return (
     <td className="whitespace-nowrap px-4 py-3 font-mono text-[11px] text-slate-400">
       {children}

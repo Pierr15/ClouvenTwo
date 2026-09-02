@@ -1,7 +1,7 @@
 import Link from "next/link";
+import BackButton from "@/components/navigation/BackButton";
 
 import {
-  ArrowLeft,
   Binary,
   Calculator,
   CheckCircle2,
@@ -75,13 +75,9 @@ export default function ToolsPage() {
 
   return (
     <main className="min-h-screen bg-[#070b12] text-slate-200">
-      <Link
-        href="/dashboard"
-        className="mb-6 inline-flex items-center gap-2 text-sm text-slate-400 transition-colors hover:text-cyan-400"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        Kembali ke Dashboard
-      </Link>
+      <div className="mx-auto w-full space-y-6">
+        <BackButton href="/dashboard">Kembali ke Dashboard</BackButton>
+      </div>
       {/* ==================================================
           HERO
       ================================================== */}
