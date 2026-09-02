@@ -87,8 +87,8 @@ export default function LoginPage() {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-            <div>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <div className="space-y-2">
               <Label htmlFor="fullName">Nama Lengkap</Label>
 
               <Input
@@ -101,12 +101,12 @@ export default function LoginPage() {
               />
             </div>
 
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="nis">NIS</Label>
 
               <Input
                 id="nis"
-                placeholder="Contoh: 25.23012"
+                placeholder="Contoh: 25.12345"
                 inputMode="numeric"
                 {...register("nis", {
                   required: true,
@@ -114,7 +114,7 @@ export default function LoginPage() {
               />
             </div>
 
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="birthDate">Tanggal Lahir</Label>
 
               <Input
@@ -126,7 +126,7 @@ export default function LoginPage() {
               />
             </div>
 
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="pin">PIN 6 Digit</Label>
 
               <Input
@@ -143,11 +143,7 @@ export default function LoginPage() {
               />
             </div>
 
-            <Button
-              type="submit"
-              disabled={loading}
-              className="w-full h-11"
-            >
+            <Button type="submit" disabled={loading} className="w-full h-11">
               {loading ? "Memproses..." : "Masuk"}
             </Button>
           </form>
